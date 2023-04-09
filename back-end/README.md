@@ -1,5 +1,7 @@
 # api-dashboard-BackEnd
 
+### Pre: [Python3](https://www.python.org/)
+
 ## Project setup
 ### Run virtual environment
 ```
