@@ -1,3 +1,3 @@
 # api_dashboard
 
-## Check manual in "backend folder" and "frontend folder"
+## Check intruction in "backend folder" and "frontend folder"
