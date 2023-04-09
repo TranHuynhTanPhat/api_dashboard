@@ -1,5 +1,7 @@
 # api-dashboard-FrontEnd
 
+### Pre: [Nodejs](https://nodejs.org/en), npm , yarn
+
 ## Project setup
 ```
 yarn install
