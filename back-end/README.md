@@ -2,10 +2,23 @@
 
 ### Pre: [Python3](https://www.python.org/)
 
+
 ## Project setup
+
+
+### Create virtual environment
+```
+python3 -m venv venv
+```
+
 ### Run virtual environment
 ```
 source venv/bin/activate
+```
+
+### Install libraries (in zsh terminal)
+```
+pip install fastapi uvicorn pymongo
 ```
 
 ### Run server with uvicorn
