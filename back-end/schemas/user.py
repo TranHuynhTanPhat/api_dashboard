@@ -1,10 +1,10 @@
 def userEntity(item) -> dict:
     return {
         "id": str(item["_id"]),
-        "name": item["name"],
         "email": item["email"],
         "password": item["password"],
-        "status": item["status"]
+        "status": item["status"],
+        "role":item["role"]
     }
 
 

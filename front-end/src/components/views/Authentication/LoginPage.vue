@@ -7,9 +7,9 @@
         <div class="contain">
             <div class="form">
                 <div><img src="../../../assets/images/admin01.png" alt="Login" width="100px" height="100px"></div>
-                <input type="text" v-model="email" placeholder="Enter Email" name="email" />
+                <input type="text" v-model="email" placeholder="Enter Email" />
                 <input type="text" v-model="password" placeholder="Enter Password" name="password" />
-                <button v-on:click="signIn">Sign in</button>
+                <button @click="signIn">Sign in</button>
                 <div class="contain">
                     <div class="forgotpassword"><router-link to="/auth/forgotpassword">Forgot password?</router-link></div>
                     <div class="donthavaaccount">Don't have account? <router-link to="/auth/register">
@@ -26,25 +26,75 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
+
+const REGISTER = "http://127.0.0.1:8000/register"
+// import { user, setUser } from "../../../store/User"
 
 export default ({
     name: 'LoginPage',
 
     data() {
         return {
-            msgLogin: 'Log in into API DASHBOARD',
-            email: "",
-            password: ""
+            msgLogin: 'Log in into API DASHBOARD'
         }
     },
+    computed: {
+        // id: {
+        //     get() {
+        //         return user.id
+        //     },
+        //     set(value) {
+        //         setUser.storeId("user/storeId", value)
+        //     }
+        // },
+        // email: {
+        //     get() {
+        //         return user.email
+        //     },
+        //     set(value) {
+        //         setUser.storeEmail("user/storeEmai", value)
+        //     }
+        // },
+        // password: {
+        //     get() {
+        //         return user.password
+        //     },
+        //     set(value) {
+        //         this.$store.commit("user/storePassword", value)
+        //     }
+        // },
+        // status: {
+        //     get() {
+        //         return this.$store.state.user.status
+        //     },
+        //     set(value) {
+        //         this.$store.commit("user/storeStatus", value)
+        //     }
+        // },
+        // role: {
+        //     get() {
+        //         return this.$store.state.user.role
+        //     },
+        //     set(value) {
+        //         this.$store.commit("user/storeRole", value)
+        //     }
+        // }
+    },
     methods: {
-        async signIn() {
-            localStorage.removeItem("user-info")
-            localStorage.setItem("user-info", JSON.stringify(this.email))
-            this.$router.push({ name: 'Dashboard' }).catch(() => {
+        async login(user) {
+            await axios.post(REGISTER, user)
+                .then(res => {
+                    console.log(res.data)
+                })
+        },
+        // async signIn() {
+        //     localStorage.removeItem("user-info")
+        //     localStorage.setItem("user-info", JSON.stringify(this.email))
+        //     this.$router.push({ name: 'Dashboard' }).catch(() => {
 
-            })
-        }
+        //     })
+        // }
     },
     created() {
         localStorage.removeItem("user-info")
