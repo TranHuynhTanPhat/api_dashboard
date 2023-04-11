@@ -12,8 +12,13 @@ python3 -m venv venv
 ```
 
 ### Run virtual environment
+#### Macos
 ```
 source venv/bin/activate
+```
+#### Windows
+```
+venv/Scripts/activate
 ```
 
 ### Install libraries (in zsh terminal)
