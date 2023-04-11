@@ -4,35 +4,51 @@
             <div class="letter">{{ msgSignUp }}</div>
         </div>
         <div class="contain">
-            <form>
+            <div class="form">
                 <div><img src="../../../assets/images/add01.png" alt="Login" width="100px" height="100px"></div>
                 <input type="text" v-model="email" placeholder="Enter Email" name="email" />
                 <input type="password" v-model="password" placeholder="Enter Password" name="password" />
                 <input type="password" v-model="confirm_password" placeholder="Enter Confirm Password"
                     name="confirm_password" />
-                <button>Sign in</button>
+                <button @click="register({email, password })">Register</button>
                 <div class="contain">
-                    <div class="donthavaaccount">Do have account? <router-link to="/auth/login">
+                    <div class="donthavaaccount">Already have account? <router-link to="/auth/login">
                             <div
                                 style="font-weight: 500;font-size: 14px;line-height: 16px;display: flex;align-items: center;color:#1990B2">
                                 Login</div>
                         </router-link>
                     </div>
                 </div>
-            </form>
+            </div>
 
         </div>
     </div>
 </template>
 <script>
+import axios from 'axios'
+
+const REGISTER = "http://127.0.0.1:8000/user/register"
+
+
 export default {
     name: 'RegisterPage',
     data() {
         return {
             msgSignUp: 'Register API Dashboard account',
             email: "",
-            password: "",
-            confirm_password: "",
+            password:"",
+            confirm_password:""
+        }
+    },
+    methods: {
+        async register(user) {
+            await axios.post(REGISTER, user)
+                .then(res => {
+                    console.log(res.data)
+                })
+                .catch(ex => {
+                    console.log(ex)
+                })
         }
     }
 }
@@ -73,7 +89,7 @@ export default {
     align-items: center;
 }
 
-form {
+.form {
     /* Auto layout */
 
     display: flex;
@@ -84,7 +100,7 @@ form {
     gap: 20px;
 
     position: relative;
-    height: auto;
+    height: 510px;
     width: 700px;
 
     margin-top: 100px;
@@ -101,7 +117,7 @@ form {
 
 }
 
-form input {
+.form input {
 
     font-weight: 600;
     font-size: 24px;
@@ -118,17 +134,17 @@ form input {
     outline: none;
 }
 
-form input::placeholder {
+.form input::placeholder {
     color: #3D555466;
 }
 
-form input:focus {
+.form input:focus {
     border-style: solid;
     border-width: 3px;
     border-color: #3d55547d;
 }
 
-form button {
+.form button {
     width: 30%;
     height: 45px;
 
@@ -143,7 +159,7 @@ form button {
     color: #FFFFFF;
 }
 
-form .contain {
+.form .contain {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -151,8 +167,15 @@ form .contain {
     width: 100%;
     height: 30px;
 }
+.form .contain .forgotpassword a {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+    color: #3D5554;
+    text-decoration: none;
+}
 
-form .contain .donthavaaccount {
+.form .contain .donthavaaccount {
     font-weight: 400;
     font-size: 14px;
     line-height: 16px;

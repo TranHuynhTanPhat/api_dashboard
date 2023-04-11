@@ -7,9 +7,9 @@
         <div class="contain">
             <div class="form">
                 <div><img src="../../../assets/images/admin01.png" alt="Login" width="100px" height="100px"></div>
-                <input type="text" v-model="email" placeholder="Enter Email" />
-                <input type="text" v-model="password" placeholder="Enter Password" name="password" />
-                <button @click="signIn">Sign in</button>
+                <input type="text" v-model="email" placeholder="Enter Email" required/>
+                <input type="password" v-model="password" placeholder="Enter Password" required/>
+                <button @click="login({ email, password })">Sign in</button>
                 <div class="contain">
                     <div class="forgotpassword"><router-link to="/auth/forgotpassword">Forgot password?</router-link></div>
                     <div class="donthavaaccount">Don't have account? <router-link to="/auth/register">
@@ -28,7 +28,7 @@
 <script>
 import axios from 'axios'
 
-const REGISTER = "http://127.0.0.1:8000/register"
+const REGISTER = "http://127.0.0.1:8000/user/register"
 // import { user, setUser } from "../../../store/User"
 
 export default ({
@@ -36,48 +36,51 @@ export default ({
 
     data() {
         return {
-            msgLogin: 'Log in into API DASHBOARD'
+            msgLogin: 'Log in into API DASHBOARD',
+            email: '',
+            password: '',
+
         }
     },
     computed: {
         // id: {
         //     get() {
-        //         return user.id
+        //         return this.$store.getters['getId']
         //     },
         //     set(value) {
-        //         setUser.storeId("user/storeId", value)
+        //         this.$store.ommit('storeId', value)
         //     }
         // },
         // email: {
         //     get() {
-        //         return user.email
+        //         return this.$store.getters['getEmail']
         //     },
         //     set(value) {
-        //         setUser.storeEmail("user/storeEmai", value)
+        //         this.$store.commit('storeEmail', value)
         //     }
         // },
         // password: {
         //     get() {
-        //         return user.password
+        //         return this.$store.getters['getPassword']
         //     },
         //     set(value) {
-        //         this.$store.commit("user/storePassword", value)
+        //         this.$store.commit('storePassword', value)
         //     }
         // },
         // status: {
         //     get() {
-        //         return this.$store.state.user.status
+        //         return this.$store.getters['getStatus']
         //     },
         //     set(value) {
-        //         this.$store.commit("user/storeStatus", value)
+        //         this.$store.commit('storeStatus', value)
         //     }
         // },
         // role: {
         //     get() {
-        //         return this.$store.state.user.role
+        //         return this.$store.getters['getRole']
         //     },
         //     set(value) {
-        //         this.$store.commit("user/storeRole", value)
+        //         this.$store.commit("storeRole", value)
         //     }
         // }
     },
@@ -87,7 +90,11 @@ export default ({
                 .then(res => {
                     console.log(res.data)
                 })
+                .catch(ex => {
+                    console.log(ex)
+                })
         },
+        
         // async signIn() {
         //     localStorage.removeItem("user-info")
         //     localStorage.setItem("user-info", JSON.stringify(this.email))
@@ -165,7 +172,7 @@ export default ({
 
 }
 
-.form input[type=text] {
+.form input {
 
     font-weight: 600;
     font-size: 24px;
@@ -182,11 +189,11 @@ export default ({
     outline: none;
 }
 
-.form input[type=text]::placeholder {
+.form input::placeholder {
     color: #3D555466;
 }
 
-.form input[type=text]:focus {
+.form input:focus {
     border-style: solid;
     border-width: 3px;
     border-color: #3d55547d;
