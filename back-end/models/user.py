@@ -4,4 +4,4 @@ class User(BaseModel):
     email:str =''
     password: str  =''
     status: int = 0
-    role: int = 0
+    role: int = 1

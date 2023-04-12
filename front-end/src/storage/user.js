@@ -2,10 +2,7 @@ export default {
     namespace: true,
     state: {
         id: "",
-        email: "",
-        password: "",
-        status: 0,
-        role: 0
+        email: ""
     },
     mutations: {
         storeId: (state, data) => {
@@ -13,16 +10,7 @@ export default {
         },
         storeEmail: (state, data) => {
             state.email = data
-        },
-        storePassword: (state, data) => {
-            state.password = data
-        },
-        storeStatus: (state, data) => {
-            state.status = data
-        },
-        storeRole: (state, data) => {
-            state.role = data
-        },
+        }
     },
     getters: {
         getId(state) {
@@ -30,15 +18,6 @@ export default {
         },
         getEmail(state) {
             return state.email
-        },
-        getPassword(state) {
-            return state.password
-        },
-        getStatus(state) {
-            return state.status
-        },
-        getRole(state) {
-            return state.role
-        },
+        }
     }
 }
