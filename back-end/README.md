@@ -25,6 +25,10 @@ venv/Scripts/activate
 ```
 pip install fastapi uvicorn pymongo
 ```
+#### Or
+```
+pip3 install -r requirements.txt
+```
 
 ### Run server with uvicorn
 ```
