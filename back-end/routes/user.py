@@ -47,12 +47,7 @@ async def register(user: User):
         _id = db.insert_one(dict(user))
         result = userEntity(db.find_one({"_id": _id.inserted_id}))
         return {
-            "status": "success",
             "message": "Successfully created user: " + user.email,
-            "data": {
-                "id": result["id"],
-                "email": result["email"],
-            },
         }
 
 
@@ -78,10 +73,7 @@ async def update_user(id: str, user: User):
     else:
         db.find_one_and_update({"_id": ObjectId(id)}, {"$set": dict(user)})
         result = userEntity(db.find_one({"_id": ObjectId(id)}))
-        return {
-            "status": "success",
-            "data": {"id": result["id"], "email": result["email"]},
-        }
+        return {"status": "success"}
 
 
 # DELETE ACCOUNT BY ID
@@ -98,13 +90,24 @@ async def delete_user(id: str):
         )
 
 
-
 # LOGIN USER
-@user_router.get("/user/login")
-async def user_login(email: str, password: str):
+@user_router.post("/user/login")
+async def user_login(user: User):
     try:
-        return {"status": "success", "data": {email, password}}
+        result = userEntity(
+            db.find_one({"email": str(user.email), "password": str(user.password)})
+        )
 
+        return {
+            "data": {
+                "id": result["id"],
+                "email": result["email"],
+                "status": result["status"],
+                "role": result["role"],
+            },
+            "token": "token",
+        }
+        # return {"status": "success"}
     except:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Login failed"

@@ -38,6 +38,10 @@ const routes = [
         path: '/table',
         name: 'Table',
         component: () => import('../components/views/Home/TablePage.vue')
+      },{
+        path: '/intro',
+        name: 'Introduction',
+        component: () => import('../components/views/Home/IntroPage.vue')
       }
 
     ]
@@ -61,11 +65,7 @@ const routes = [
         path: 'forgotpassword',
         name: 'ForgotPassword',
         component: () => import('../components/views/Authentication/ForgotPassword.vue')
-      }, {
-        path: '/intro',
-        name: 'Introduction',
-        component: () => import('../components/views/Authentication/IntroPage.vue')
-      }
+      }, 
 
     ]
   },

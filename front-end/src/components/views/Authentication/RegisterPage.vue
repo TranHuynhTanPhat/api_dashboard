@@ -1,18 +1,18 @@
 <template>
     <div>
         <div class="navcontain">
-            <div class="letter">{{ msgSignUp }}</div>
+            <div class="header">{{ msgSignUp }}</div>
         </div>
         <div class="contain">
-            <form>
+            <form @submit.prevent="handleSubmit">
                 <div><img src="../../../assets/images/add01.png" alt="Login" width="100px" height="100px"></div>
-                <input type="text" v-model="email" placeholder="Enter Email" name="email" />
+                <input type="email" v-model="email" placeholder="Enter Email" name="email" required />
                 <div class="pass-contain">
-                    <input type="password" v-model="password" placeholder="Enter Password" name="password" />
-                    <input type="password" v-model="confirm_password" placeholder="Enter Confirm Password"
-                        name="confirm_password" />
+                    <input type="password" v-model="password" placeholder="Enter Password" name="password" required />
+                    <input type="password" v-model="confirm_password" placeholder="Confirm Password" name="confirm_password"
+                        required />
                 </div>
-                <button @click="register({ email, password })">Register</button>
+                <button>Register</button>
                 <div class="text-contain">
                     <div class="donthavaaccount">Already have account? <router-link to="/auth/login">
                             <div
@@ -43,12 +43,11 @@ export default {
         }
     },
     methods: {
-        async register(user) {
-            await axios.post(REGISTER, user)
+        async handleSubmit() {
+            await axios.post(REGISTER, { "email": this.email, "password": this.password })
                 .then(res => {
-                    console.log("RegisterPage: " + res.data)
-                    if (res.status == "success") {
-                        this.$router.push('/auth/login')
+                    if (res.status == 200) {
+                        this.$router.push({ name: "Signin" })
                     }
                 })
                 .catch(ex => {
@@ -58,6 +57,6 @@ export default {
     }
 }
 </script>
-<style scoped>
+<style>
 @import '../../../assets/css/form-style.css';
 </style>
