@@ -54,7 +54,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     modules: {
-        user: user,
+        user: user
     }
 
     // state,

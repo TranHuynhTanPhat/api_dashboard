@@ -35,7 +35,7 @@ export default {
             this.$store.dispatch('user', null)
             // this.activeNav="logout"
             // console.log(localStorage.getItem('token'))
-            // this.$router.go()
+            this.$router.go()   
 
         }
     },

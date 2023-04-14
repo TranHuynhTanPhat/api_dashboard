@@ -27,6 +27,8 @@ footer {
   clear: both;
   position: relative;
   overflow: hidden;
+
+  margin-top: 120px;
 }
 
 footer .containlogo {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    dashboard
+    
   </div>
 </template>
 <script>
@@ -18,7 +18,9 @@ export default {
     //   this.$router.push({ name: 'Signin' })
     // }
 
-    let user = this.$store.state
+    let user = this.$store.state.user
+
+    console.log(user)
     if (user === null || localStorage.getItem("token") === null) {
       this.$router.push({ name: 'Signin' })
     }
