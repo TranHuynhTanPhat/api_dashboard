@@ -1,12 +1,20 @@
 <template>
-    <div></div>
+  <div>
+    <Navbar />
+  </div>
 </template>
 <script>
+import Navbar from '../../AppNav.vue'
 export default {
-    name:'SettingPage',
-    data:()=>{
-        
-    },mounted() {
+  name: 'SettingPage',
+  data() {
+    return {
+
+    }
+  },
+  components: {
+    Navbar
+  }, mounted() {
     // let user = localStorage.getItem('user-info')
     // console.log(user)
     // if (user === null) {
@@ -18,6 +26,12 @@ export default {
       this.$router.push({ name: 'Signin' })
     }
 
+  },
+  created() {
+    this.$store.commit('isSetting')
   }
 }
 </script>
+<style scoped>
+@import url('../../../assets/css/nav-style.css');
+</style>

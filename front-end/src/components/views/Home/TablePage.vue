@@ -1,11 +1,18 @@
 <template>
-    <div></div>
+    <div>
+        <Navbar />
+    </div>
 </template>
 <script>
+import Navbar from '../../AppNav.vue'
 export default {
     name: 'TablePage',
-    data: () => {
+    data() {
+        return {
 
+        }
+    }, components: {
+        Navbar
     }, mounted() {
         // let user = localStorage.getItem('user-info')
         // console.log(user)
@@ -18,6 +25,11 @@ export default {
             this.$router.push({ name: 'Signin' })
         }
 
+    }, created() {
+        this.$store.commit('isTable')
     }
 }
 </script>
+<style scoped>
+@import url('../../../assets/css/nav-style.css');
+</style>

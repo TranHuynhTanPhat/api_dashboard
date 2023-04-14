@@ -1,77 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import user from './User'
+import User from './User'
+import Nav from './Nav';
 
 Vue.use(Vuex);
 
-// const User = {
-//     state: () => ({
-//         id: "",
-//         email: "",
-//         password: "",
-//         status: 0,
-//         role: 0
-//     }),
-//     mutations: {
-//         storeId: (state, data) => {
-//             state.id = data
-//         },
-//         storeEmail: (state, data) => {
-//             state.email = data
-//         },
-//         storePassword: (state, data) => {
-//             state.password = data
-//         },
-//         storeStatus: (state, data) => {
-//             state.status = data
-//         },
-//         storeRole: (state, data) => {
-//             state.role = data
-//         },
-//     },
-//     getters: {
-//         getId(state) {
-//             return state.id
-//         },
-//         getEmail(state) {
-//             return state.email
-//         },
-//         getPassword(state) {
-//             return state.password
-//         },
-//         getStatus(state) {
-//             return state.status
-//         },
-//         getRole(state) {
-//             return state.role
-//         },
-//     }
-// }
 
-// const state = {
-//     user: null
-// }
 
 export const store = new Vuex.Store({
     modules: {
-        user: user
+        user: User,
+        nav: Nav
     }
-
-    // state,
-    // getters: {
-    //     user: (state) => {
-    //         return state.user
-    //     }
-    // },
-    // actions: {
-    //     user(context, user) {
-    //         context.commit('user', user) 
-    //     }
-    // },
-    // mutations: {
-    //     user(state, user) {
-    //         state.user = user
-    //     }
-    // }
 
 })

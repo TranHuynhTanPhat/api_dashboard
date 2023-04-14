@@ -1,0 +1,107 @@
+.header {
+    height: 120px;
+    width: 100%;
+    background: transparent;
+  
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+  
+  
+  }
+  
+  .nav {
+    height: 60px;
+    width: 100%;
+  
+    background: url('../../assets//images/navbar_full.png');
+    background-color: white;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto;
+  
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  }
+
+  .nav-contain-left{
+    float:left;
+    height: 60px;
+    width: 160px;
+
+    padding:0px 50px;
+
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: nowrap;
+  
+  }
+
+  
+  .nav-contain-right {
+    float: right;
+    height: 60px;
+    width: calc(100% - 160px);
+  
+    padding: 0px 50px;
+  
+    display: flex;
+    flex-flow: row;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: nowrap;
+  
+  
+    gap: 50px;
+  
+  
+  }
+  
+  .item {
+    height: 50px;
+    width: 50px;
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    border-radius: 100%;
+  
+    margin: 0 5px
+  }
+  
+  .item:hover {
+    height: 60px;
+    width: 60px;
+    background: white;
+  
+    margin: 0px;
+  
+    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+  }
+  
+  .item a img {
+    height: 50px;
+    width: 50px;
+    border-radius: 100%;
+  
+    margin: auto;
+  }
+  
+  .item a img:hover {
+    height: 60px;
+    width: 60px;
+    margin: auto;
+  }
+  
+  .active {
+    height: 60px;
+    width: 60px;
+  
+    background: white;
+  
+    margin: 0px;
+  
+    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+  }

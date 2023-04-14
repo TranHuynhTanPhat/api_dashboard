@@ -49,9 +49,9 @@ export default ({
             await axios.post(LOGIN, { "email": this.email, "password": this.password })
                 .then(res => {
                     if (res.status == 200) {
-                        this.$store.dispatch('user', res.data.data)
+                        this.$store.commit('user', res.data.data)
                         localStorage.setItem('token', res.data.token)
-                        // console.log(this.$store.state)
+                        console.log(this.$store.state.user)
                         console.log(localStorage.getItem('token'))
 
 
@@ -76,7 +76,7 @@ export default ({
     // },
     created() {
         localStorage.removeItem('token')
-        this.$store.dispatch('user', null)
+        this.$store.commit('user', null)
     }
 })
 </script>
