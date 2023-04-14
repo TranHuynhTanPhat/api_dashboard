@@ -13,11 +13,14 @@ export default {
     getters: {
         getUser(state){
             return state.user
+        },
+        getEmail(state){
+            return state.user['email']
         }
     },
     actions:{
         user(context, data){
-            context.commit('user', data)
+            context.commit('storeUser', data)
         }
     }
 }
