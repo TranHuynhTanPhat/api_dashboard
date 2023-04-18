@@ -9,6 +9,9 @@ export default ({
   name: "App",
   data: () => ({
   }),
+  created() {
+    document.title = "API Dashboard"
+  }
 })
 </script>
 
