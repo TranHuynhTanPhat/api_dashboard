@@ -2,7 +2,7 @@
     <!-- <div class="bg-btn-login"><div class="letter-btn-login">{{ msgLogin }}</div></div> -->
     <div>
         <div class="navcontain">
-            <div class="header">{{ msgLogin }}</div>
+            <div class="header-name-page">{{ msgLogin }}</div>
         </div>
         <div class="contain">
             <form @submit.prevent="handlerSubmit">
@@ -49,15 +49,14 @@ export default ({
             await axios.post(LOGIN, { "email": this.email, "password": this.password })
                 .then(res => {
                     if (res.status == 200) {
-                        this.$store.commit('user', res.data.data)
+                        // this.$store.commit('user', res.data.data)
+                        localStorage.setItem('id', res.data.data.id)
+                        localStorage.setItem('email', res.data.data.email)
+                        localStorage.setItem('status', res.data.data.status)
+                        localStorage.setItem('role', res.data.data.role)
+
                         localStorage.setItem('token', res.data.token)
-                        console.log(this.$store.state.user)
-                        console.log(localStorage.getItem('token'))
-
-
                         this.$router.push('/dashboard')
-
-                        // console.log((res.data.data ))
                     }
                 })
                 .catch(ex => {
@@ -65,18 +64,13 @@ export default ({
                 })
         }
     },
-
-    // async signIn() {
-    //     localStorage.removeItem("user-info")
-    //     localStorage.setItem("user-info", JSON.stringify(this.email))
-    //     this.$router.push({ name: 'Dashboard' }).catch(() => {
-
-    //     })
-    // }
-    // },
     created() {
         localStorage.removeItem('token')
-        this.$store.commit('user', null)
+        localStorage.removeItem('id')
+        localStorage.removeItem('email')
+        localStorage.removeItem('status')
+        localStorage.removeItem('role')
+
     }
 })
 </script>

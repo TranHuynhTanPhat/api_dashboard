@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="navcontain">
-            <div class="header">{{ msgSignUp }}</div>
+            <div class="header-name-page">{{ msgSignUp }}</div>
         </div>
         <div class="contain">
             <form @submit.prevent="handleSubmit">

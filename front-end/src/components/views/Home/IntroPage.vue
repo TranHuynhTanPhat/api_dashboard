@@ -9,39 +9,48 @@
         </nav>
         <nav v-else>
             <ul>
-                <li><div @click.prevent="handlerClick" class="important" target="_parent">{{ msgLogout
-                }}</div></li>
+                <li>
+                    <div @click.prevent="handlerClick" class="important" target="_parent">{{ msgLogout
+                    }}</div>
+                </li>
+                <li><router-link to="/dashboard" target="_parent">{{ msgHome }}</router-link></li>
             </ul>
         </nav>
         <div class="intro">
             <img src="../../../assets/images/intro.png" width="80%" />
         </div>
+        <AppFooter />
+
     </div>
 </template>
 <script scoped>
+import AppFooter from '@/components/AppFooter.vue';
 export default {
     name: "IntroPage",
     data: () => ({
+        msgHome: 'Home',
         msgSignUp: 'Sign up',
         msgSignIn: 'Login',
         msgLogout: 'Logout',
         activeNav: 'logout'
     }),
     components: {
+        AppFooter,
     },
     methods: {
         async handlerClick() {
             localStorage.removeItem('token')
-            this.$store.dispatch('user', null)
-            // this.activeNav="logout"
-            // console.log(localStorage.getItem('token'))
-            this.$router.go()   
+            localStorage.removeItem('id')
+            localStorage.removeItem('email')
+            localStorage.removeItem('status')
+            localStorage.removeItem('role')
+            this.$router.go()
 
         }
     },
     mounted() {
-        if (this.$store.state != null && localStorage.getItem('token') != null) {
-            this.activeNav = "verified"
+        if (localStorage.getItem('id') != null || localStorage.getItem('token') != null) {
+            this.activeNav = "login"
         } else {
             this.activeNav = "logout"
         }

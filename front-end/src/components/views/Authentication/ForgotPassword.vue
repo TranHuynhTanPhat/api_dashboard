@@ -2,7 +2,7 @@
     <!-- <div class="bg-btn-login"><div class="letter-btn-login">{{ msgLogin }}</div></div> -->
     <div>
         <div class="navcontain">
-            <div class="header">{{ msgForgotPassword }}</div>
+            <div class="header-name-page">{{ msgForgotPassword }}</div>
         </div>
         <div class="contain">
             <form @submit.prevent="handlerVerify" v-if="activeOTP == 'send'">

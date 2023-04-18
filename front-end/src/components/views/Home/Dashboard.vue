@@ -15,18 +15,9 @@ export default {
     Navbar,
   },
   mounted() {
-    // let user = localStorage.getItem('user-info')
-    // console.log(user)
-    // if (user === null) {
-    //   this.$router.push({ name: 'Signin' })
-    // }
-
-    let user = this.$store.state.user
-
-    if (user === null || localStorage.getItem("token") === null) {
-      this.$router.push({ name: 'Signin' })
-    }
-
+    if (localStorage.getItem('id') === null || localStorage.getItem('token') === null) {
+            this.$router.push({ name: 'Signin' })
+        }
   },
   created(){
     this.$store.commit('isDashboard');
