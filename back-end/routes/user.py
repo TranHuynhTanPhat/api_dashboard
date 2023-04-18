@@ -1,29 +1,28 @@
 from fastapi import APIRouter, HTTPException, status
-
 from models.user import User
 from config.db import db
 from schemas.user import userEntity, usersEntity
 from bson import ObjectId
 
-user_router = APIRouter()
+app_router = APIRouter()
 
 
 # RETRIEVE ALL ACCOUNT
-@user_router.get("/users")
+@app_router.get("/users")
 async def find_all_users():
     result = usersEntity(db.find())
     return {"status": "success", "data": result}
 
 
 # RETRIEVE ACCOUNT BY ID
-@user_router.get("/user/{id}")
+@app_router.get("/user/{id}")
 async def find_user_by_id(id: str):
     result = userEntity(db.find_one({"_id": ObjectId(id)}))
     return {"status": "success", "data": result}
 
 
 # REGISTER ACCOUNT
-@user_router.post("/user/register")
+@app_router.post("/user/register")
 async def register(user: User):
     # check existed email
     check = usersEntity(db.find({"email": str(user.email)}))
@@ -52,7 +51,7 @@ async def register(user: User):
 
 
 # UPDATE ACCOUNT BY ID
-@user_router.put("/user/{id}")
+@app_router.put("/user/{id}")
 async def update_user(id: str, user: User):
     # check existed email
     check = usersEntity(db.find({"email": str(user.email)}))
@@ -77,7 +76,7 @@ async def update_user(id: str, user: User):
 
 
 # DELETE ACCOUNT BY ID
-@user_router.delete("/user/{id}")
+@app_router.delete("/user/{id}")
 async def delete_user(id: str):
     check = userEntity(db.find_one({"_id": ObjectId(id)}))
     if check["role"] != 0:
@@ -91,7 +90,7 @@ async def delete_user(id: str):
 
 
 # LOGIN USER
-@user_router.post("/user/login")
+@app_router.post("/user/login")
 async def user_login(user: User):
     try:
         result = userEntity(
@@ -112,3 +111,6 @@ async def user_login(user: User):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Login failed"
         )
+        
+
+
