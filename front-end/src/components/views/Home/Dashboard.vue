@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <Navbar />
     <div class="dashboard-contain-top">
       <div class="contain-top-child">
@@ -11,11 +12,54 @@
             <p class="desc-content">since last week</p>
           </div>
         </div>
-        <div class="contain-top-child-right">
-
+        <div class="contain-top-child-right" style="background-color: #065083;">
+          <font-awesome-icon icon="fa-solid fa-users" size="2xl" style="color:white" />
         </div>
       </div>
+      <div class="contain-top-child">
+        <div class="contain-top-child-left">
+          <p class="title">new client</p>
+          <p class="main">500</p>
+          <div class="desc">
+            <p class="desc-percent">-1%</p>
+            <p class="desc-content">since last quarter</p>
+          </div>
+        </div>
+        <div class="contain-top-child-right" style="background-color: #fe8f21;">
+          <font-awesome-icon icon="fa-solid fa-user-plus" size="2xl" style="color:white" />
+        </div>
+      </div>
+      <div class="contain-top-child">
+        <div class="contain-top-child-left">
+          <p class="title">Status Success</p>
+          <p class="main">1,500</p>
+          <div class="desc">
+            <p class="desc-percent">2%</p>
+            <p class="desc-content">compared to failure</p>
+          </div>
+        </div>
+        <div class="contain-top-child-right" style="background-color: #007bff;">
+          <font-awesome-icon icon="fa-solid fa-globe" size="2xl" style="color:white" />
+        </div>
+      </div>
+      <div class="contain-top-child">
+        <div class="contain-top-child-left">
+          <p class="title">Status failure</p>
+          <p class="main">1,000</p>
+          <div class="desc">
+            <p class="desc-percent">2%</p>
+            <p class="desc-content">since yesterday</p>
+          </div>
+        </div>
+        <div class="contain-top-child-right" style="background-color: red;">
+          <font-awesome-icon :icon="['fas', 'circle-info']" size="2xl" style="color:white" />
+        </div>
+      </div>
+    </div>
 
+    <div class="dashboard-contain-main">
+        <div class="contain-main-child-left"></div>
+        <div class="contain-main-child-right"></div>
     </div>
   </div>
 </template>
@@ -43,89 +87,5 @@ export default {
 }
 </script>
 <style scoped>
-
-.dashboard-contain-top {
-  margin-top: 120px;
-  display: flex;
-  flex-flow: row;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: nowrap;
-
-
-  gap: 50px;
-
-}
-
-.dashboard-contain-top .contain-top-child {
-  background-color: white;
-
-  padding: 20px;
-
-  width: auto;
-  height: auto;
-
-  box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
-
-  border-radius: 15px;
-}
-
-.contain-top-child-left {
-  height: auto;
-  width: 200px;
-
-  display: flex;
-  flex-flow: column;
-  justify-content: flex-start;
-  align-items:start;;
-  gap: 5px;
-}
-
-.contain-top-child-right {
-  height: auto;
-  width: 50px;
-}
-
-
-.contain-top-child-left .title {
-  text-transform: uppercase;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  color: #3d5554b9;
-}
-
-.contain-top-child-left .main {
-  text-transform: uppercase;
-  font-style: normal;
-  font-weight: 800;
-  font-size: 28px;
-  color: #3d5554;
-}
-
-.contain-top-child-left .desc{
-  display: flex;
-  flex-flow: row;
-  justify-content: start;
-  align-items: start;
-  margin-top: 10px;
-
-  gap: 5px;
-}
-
-.desc .desc-percent{
-  text-transform:none;
-  font-style: italic;
-  font-weight: 300;
-  font-size: 16px;
-  color: #1990B2;
-}
-
-.desc .desc-content{
-  text-transform:none;
-  font-style: italic;
-  font-weight: 300;
-  font-size: 16px;
-  color: #3d5554b9;
-}
+@import url('../../../assets/css/dashboard-style.css');
 </style>

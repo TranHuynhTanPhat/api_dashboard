@@ -22,7 +22,7 @@ export default {
         AppFooter,
     },
     methods: {
-    }
+    },
 }
     // mounted() {
     //     let user = localStorage.getItem('user-info')
