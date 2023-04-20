@@ -3,7 +3,8 @@
     <div class="header">
       <div class="nav">
         <div class="nav-contain-left">
-          <div class="item" :class="{active:isSetting}"><router-link to="/setting"><img src="../assets/images/setting.png" alt="Setting"></router-link></div>
+          <div class="item" :class="{ active: isSetting }"><router-link to="/setting"><img src="../assets/images/setting.png"
+                alt="Setting"></router-link></div>
         </div>
         <div class="nav-contain-right">
           <div class="item" :class="{ active: isTable }"><router-link to="./table">
@@ -43,21 +44,6 @@ export default {
   },
   computed: {
 
-
-  },
-  mounted() {
-    // let user = localStorage.getItem('user-info')
-    // console.log(user)
-    // if (user === null) {
-    //   this.$router.push({ name: 'Signin' })
-    // }
-
-    let user = this.$store.state.user
-
-
-    if (user === null || localStorage.getItem("token") === null) {
-      this.$router.push({ name: 'Signin' })
-    }
 
   }
 };

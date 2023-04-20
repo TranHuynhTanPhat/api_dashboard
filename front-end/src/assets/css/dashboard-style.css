@@ -122,12 +122,12 @@
   height: 500px;
   width: 60%;
 
-  padding: 20px;
+  padding: 50px;
 
   display: flex;
   flex-flow: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 
   box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
     rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
@@ -138,14 +138,19 @@
   height: 500px;
   width: 40%;
 
-  padding: 20px;
+  padding: 50px;
 
   display: flex;
   flex-flow: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 
   box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
     rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
   border-radius: 15px;
+}
+
+.h1{
+  font-size: 24px;
+  font-weight: 800;
 }
