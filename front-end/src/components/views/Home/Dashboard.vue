@@ -5,9 +5,9 @@
       <div class="contain-top-child">
         <div class="contain-top-child-left">
           <p class="title">today's users</p>
-          <p class="main">1,500</p>
+          <p class="main">{{this.today_user.count}}</p>
           <div class="desc">
-            <p class="desc-percent">2%</p>
+            <p class="desc-percent">{{this.today_user.percent}}%</p>
             <p class="desc-content">since last week</p>
           </div>
         </div>
@@ -91,7 +91,7 @@ import Navbar from "../../AppNav.vue";
 import RadarChart from "./charts/RardarChart.vue";
 import BarChart from "./charts/BarChart.vue";
 import axios from "axios";
-import { CHART_DATA } from "@/axios";
+import { CHART_DATA, TODAY_USERS } from "@/axios";
 
 export default {
   name: "DashboardPage",
@@ -102,6 +102,10 @@ export default {
   },
   data() {
     return {
+      today_user: {
+        count: 0,
+        percent: 0,
+      },
     };
   },
   mounted() {
@@ -115,6 +119,18 @@ export default {
   async created() {
     document.title = "Dashboard";
     this.$store.commit("isDashboard");
+
+    await axios
+      .get(TODAY_USERS)
+      .then((res) => {
+        if(res.status==200){
+          this.today_user.count=res.data.todayUsers
+          this.today_user.percent=res.data.percentThisOneWeek
+        }
+      })
+      .catch((ex) => {
+        console.log(ex);
+      });
 
     const { data } = await axios.get(CHART_DATA);
 
