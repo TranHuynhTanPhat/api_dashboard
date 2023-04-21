@@ -3,6 +3,7 @@ from models.user import User
 from config.db import db
 from schemas.user import userEntity, usersEntity
 from bson import ObjectId
+from datetime import datetime, date
 
 app_router = APIRouter()
 
@@ -11,6 +12,8 @@ app_router = APIRouter()
 @app_router.get("/users")
 async def find_all_users():
     result = usersEntity(db.find())
+    for r in result:
+        r["image"] = ""
     return {"status": "success", "data": result}
 
 
@@ -63,15 +66,14 @@ async def update_user(id: str, user: User):
     if len(check) != 0:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail=f"Can't create account with email: {user.email}",
+            detail=f"Can't update email: {user.email}",
         )
     elif int(user.role) == 0 or int(user.role) > 2 or int(user.role) < 0:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Can't create account"
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Can't update account"
         )
     else:
         db.find_one_and_update({"_id": ObjectId(id)}, {"$set": dict(user)})
-        result = userEntity(db.find_one({"_id": ObjectId(id)}))
         return {"status": "success"}
 
 
@@ -96,13 +98,23 @@ async def user_login(user: User):
         result = userEntity(
             db.find_one({"email": str(user.email), "password": str(user.password)})
         )
-
+        acc = result["accessed_at"]
+        length = len(acc)
+        
+        if length>0:
+            if acc[length - 1].date() != date.today():
+                result["accessed_at"].append(datetime.now())
+                db.find_one_and_update({"_id": ObjectId(result["id"])}, {"$set": dict(result)})
+                
+        else: 
+            result["accessed_at"].append(datetime.now())
+            db.find_one_and_update({"_id": ObjectId(result["id"])}, {"$set": dict(result)})
         return {
             "data": {
                 "id": result["id"],
                 "email": result["email"],
                 "status": result["status"],
-                "role": result["role"],
+                "role": result["role"]
             },
             "token": "token",
         }
@@ -111,6 +123,3 @@ async def user_login(user: User):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Login failed"
         )
-        
-
-
