@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, status, File, UploadFile, Request
 from config.db import db
 from schemas.user import userEntity, usersEntity
 from bson import ObjectId
-from main_data.getData import times, stateOk, inspection
+from main_data.getData import times, stateOk, inspection, data
 import numpy as np
 from datetime import date, datetime
 import base64
@@ -95,6 +95,17 @@ async def status_fail():
 @app_router.get("/get-inspection")
 async def get_inspection():
     return {"data": inspection}
+
+
+@app_router.get("/get-inspection-detail")
+async def get_inspection_detail(id: str):
+    angid = [0 for i in range(0, 7)]
+    listA = data[id]
+    for a in listA:
+        temp = listA[a]
+        num = int(temp["angle_id"])
+        angid[num - 1] += 1
+    return {"angle_id":angid}
 
 
 @app_router.post("/upload-avatar")

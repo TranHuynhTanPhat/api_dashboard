@@ -1,9 +1,10 @@
 export default {
     namespace: true,
     state: {
-        count:[],
-        stateOk:[],
-        stateFail:[]
+        count: [],
+        stateOk: [],
+        stateFail: [],
+        angleId: null
     },
     mutations: {
 
@@ -16,27 +17,36 @@ export default {
         stateFail: (state, data) => {
             state.stateFail = data
         },
+        angleId: (state, data) => {
+            state.angleId = data
+        }
     },
     getters: {
         getCount(state) {
             return state.count
         },
-        getStateOk(state){
+        getStateOk(state) {
             return state.stateOk
         },
-        getStateFail(state){
+        getStateFail(state) {
             return state.stateFail
+        },
+        getAngleId(state) {
+            return state.angleId
         }
     },
     actions: {
         count(context, data) {
             context.commit('count', data)
         },
-        stateOk(context, data){
+        stateOk(context, data) {
             context.commit('stateOk', data)
         },
-        stateFail(context, data){
+        stateFail(context, data) {
             context.commit('stateFail', data)
+        },
+        angleId(context, data) {
+            context.commit('angleId', data)
         }
     }
 }

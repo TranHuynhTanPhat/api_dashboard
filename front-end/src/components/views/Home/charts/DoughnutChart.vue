@@ -1,5 +1,5 @@
 <template>
-  <bar-chart
+  <Doughnut
     :options="chartOptions"
     :data="chartData"
     :chart-id="chartId"
@@ -11,38 +11,30 @@
     :height="height"
   />
 </template>
-  
+
 <script>
-import { Bar as BarChart } from "vue-chartjs";
+import { Doughnut } from "vue-chartjs";
 
 import {
   Chart as ChartJS,
   Title,
   Tooltip,
   Legend,
-  BarElement,
+  ArcElement,
   CategoryScale,
-  LinearScale,
 } from "chart.js";
 
-ChartJS.register(
-  Title,
-  Tooltip,
-  Legend,
-  BarElement,
-  CategoryScale,
-  LinearScale
-);
+ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
 
 export default {
-  name: "BarChart",
+  name: "DoughnutChart",
   components: {
-    "bar-chart": BarChart,
+    Doughnut,
   },
   props: {
     chartId: {
       type: String,
-      default: "bar-chart",
+      default: "doughnut-chart",
     },
     datasetIdKey: {
       type: String,
@@ -70,15 +62,13 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      chartOptions: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
+    };
   },
-  // async mounted() {
-  //     const { data } = await axios.get(CHART_TIMES_CHECK)
-
-  //     this.chartDataBar.datasets[0].data = data.count
-
-  //     console.log(this.chartDataBar)
-  // },
   computed: {
     chartData() {
       return {
@@ -93,32 +83,23 @@ export default {
         ],
         datasets: [
           {
-            label: "Times",
-            backgroundColor: "#065083",
-            borderColor: "#065083",
-            borderWidth: 1,
+            backgroundColor: [
+              "#C0392B",
+              "#9B59B6",
+              "#2980B9",
+              "#34495E",
+              "#27AE60",
+              "#F1C40F",
+              "#E67E22",
+            ],
+            data: this.$store.state.chartDashboard.angleId,
+            borderAlign: "center",
+            borderColor: "transparent",
             borderRadius: 10,
-            hoverBackgroundColor: "#99d9f2",
-            hoverBorderColor: "#99d9f2",
-            data: this.$store.state.chartDashboard.count,
+            offset:50,
+            hoverOffset:10
           },
         ],
-      };
-    },
-    chartOptions() {
-      return {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            labels: {
-              // This more specific font property overrides the global property
-              font: {
-                size: 14,
-              },
-            },
-          },
-        },
       };
     },
   },

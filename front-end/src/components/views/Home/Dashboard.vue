@@ -15,7 +15,7 @@
             <p class="desc-content">compared with total</p>
           </div>
         </div>
-        <div class="contain-top-child-right" style="background-color: #065083">
+        <div class="contain-top-child-right" style="background-color: #DE3163">
           <font-awesome-icon
             icon="fa-solid fa-users"
             size="2xl"

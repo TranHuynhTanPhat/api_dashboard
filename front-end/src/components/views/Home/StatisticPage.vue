@@ -6,13 +6,17 @@
         <p class="h1" style="margin: 5px 0 15px 20px">Inspection</p>
         <table>
           <thead>
-            <th style="padding-left: 20px;">ID</th>
+            <th style="padding-left: 20px">ID</th>
             <th>State OK</th>
             <th>From</th>
-            <th>To</th>
+            <th style="width: 8%">To</th>
           </thead>
           <tbody>
-            <tr v-for="item in sortListData" :key="item.id">
+            <tr
+              v-for="item in sortListData"
+              :key="item.id"
+              @click="getDetail(item.id)"
+            >
               <td>
                 <p class="content">{{ item["id"] }}</p>
               </td>
@@ -54,19 +58,29 @@
           </button>
         </div>
       </div>
-      <div class="statistic-main-right"></div>
+      <div
+        class="statistic-main-right"
+        v-if="this.$store.state.chartDashboard.angleId != null"
+      >
+        <DoughnutChart/>
+      </div>
+      <div class="statistic-main-right" v-else>
+        <p class="note">Click row to show chart !</p>
+      </div>
     </div>
   </div>
 </template>
 <script>
 import axios from "axios";
-import { GET_INSPECTION } from "@/axios";
+import { GET_INSPECTION, GET_INSPECTION_DETAIL } from "@/axios";
 import Navbar from "../../AppNav.vue";
+import DoughnutChart from "./charts/DoughnutChart.vue";
 
 export default {
   name: "StatisticPage",
   components: {
     Navbar,
+    DoughnutChart,
   },
   data() {
     return {
@@ -87,7 +101,9 @@ export default {
     this.$store.commit("isStatistic");
 
     await axios.get(GET_INSPECTION).then((res) => {
-      this.listInspection = res.data.data;
+      if (res.status == 200) {
+        this.listInspection = res.data.data;
+      }
     });
   },
   methods: {
@@ -97,6 +113,17 @@ export default {
     },
     prevPage() {
       if (this.currentPage > 1) this.currentPage--;
+    },
+    async getDetail(id) {
+      console.log(id);
+      await axios
+        .get(GET_INSPECTION_DETAIL, { params: { id: id } })
+        .then((res) => {
+          if (res.status == 200) {
+            this.$store.dispatch("angleId", res.data.angle_id);
+          }
+        })
+        .catch((ex) => console.log(ex));
     },
   },
   computed: {
@@ -111,115 +138,5 @@ export default {
 };
 </script>
 <style scoped>
-.statistic-main {
-  height: auto;
-  width: 100%;
-
-  margin-top: 120px;
-
-  padding: 20px 50px;
-
-  display: flex;
-  flex-flow: row;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: nowrap;
-
-  gap: 20px;
-}
-
-.statistic-main .statistic-main-left {
-  height: 660px;
-  width: 70%;
-
-  padding: 20px 0 0 0;
-
-  background-color: white;
-
-  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
-    rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
-
-  border-radius: 15px;
-}
-
-.statistic-main .statistic-main-right {
-  height: 660px;
-  width: 30%;
-
-  padding: 20px;
-
-  background-color: white;
-
-  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
-    rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
-
-  border-radius: 15px;
-}
-
-.statistic-main-left table {
-  width: 100%;
-  height: auto;
-
-  text-align: left;
-
-  border-collapse: collapse;
-}
-
-.statistic-main-left th {
-  text-transform: uppercase;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  color: #3d555426;
-
-  padding: 15px 0 15px 0;
-}
-
-.statistic-main-left td {
-  padding: 15px 0 15px 0;
-
-  font-weight: 500;
-  color: #3d5554;
-
-  border-top: solid 0.5px #3d555426;
-}
-
-.statistic-main-left tr:hover {
-  background-color: #3d55542d;
-}
-
-.content {
-  margin-left: 10px;
-}
-
-.footer-table {
-  display: flex;
-  flex-flow: row;
-  justify-content: center;
-  align-items: center;
-
-  gap: 10px;
-
-  padding: 15px 0 20px 0;
-}
-
-.footer-table p {
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #3d55542d;
-
-  font-weight: 600;
-  font-size: 12px;
-  color: #3d5554;
-}
-
-.footer-table button{
-  padding:5px;
-}
-
-.h1 {
-  font-size: 24px;
-  font-weight: 800;
-  color: #3d5554;
-}
+@import url("../../../assets/css/statistic-style.css");
 </style>

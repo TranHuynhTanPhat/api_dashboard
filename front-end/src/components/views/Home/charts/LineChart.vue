@@ -1,91 +1,102 @@
 <template>
-    <ChartLine :data="data" :options="options" />
-</template>
+    <LineChartGenerator
+      :chart-options="chartOptions"
+      :chart-data="chartData"
+      :chart-id="chartId"
+      :dataset-id-key="datasetIdKey"
+      :plugins="plugins"
+      :css-classes="cssClasses"
+      :styles="styles"
+      :width="width"
+      :height="height"
+    />
+  </template>
   
-<script>
-// DataPage.vue
-import { Line as ChartLine } from 'vue-chartjs'
-import {
+  <script>
+  import { Line as LineChartGenerator } from 'vue-chartjs'
+  
+  import {
     Chart as ChartJS,
     Title,
     Tooltip,
     Legend,
-    BarElement,
-    CategoryScale,
-    LinearScale,
     LineElement,
-    PointElement,
-    Colors,
-    Filler
-} from "chart.js";
-
-ChartJS.register(
+    LinearScale,
+    CategoryScale,
+    PointElement
+  } from 'chart.js'
+  
+  ChartJS.register(
     Title,
     Tooltip,
     Legend,
-    PointElement,
-    BarElement,
-    CategoryScale,
-    LinearScale,
     LineElement,
-    Colors,
-    Filler
-);
-
-export default {
+    LinearScale,
+    CategoryScale,
+    PointElement
+  )
+  
+  export default {
     name: 'LineChart',
-    components: { ChartLine },
-    props: {
-        chartData: {
-            type: Object,
-            required: true
-        }, options: {
-            type: Object,
-            required: true
-        }
+    components: {
+      LineChartGenerator
     },
-    mounted: {
-        data: {
-            labels: [
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "7"
-            ],
-            datasets: [
-                {
-                    label: "Times",
-                    data: chartData,
-                    backgroundColor: "#ffc107",
-                    borderColor: "#ffc107",
-                    pointBackgroundColor: "#ffc107",
-                    pointBorderColor: "white",
-                    pointBorderWidth: 5,
-                    pointRadius: 10,
-                    tension: 0.3,
-                    fill: {
-                        target: 'origin',
-                        above: 'rgb(255, 0, 0)',   // Area will be red above the origin
-                        below: 'rgb(0, 0, 255)'    // And blue below the origin
-                    }
-                }
-            ]
-        },
-        options: {
-            title: {
-                display: true,
-                text: 'Đồ thị trạng thái Router theo mã toạ độ'
-            },
-            responsive: true,
-            maintainAspectRatio: false,
-            filler: {
-                propagate: true
+    props: {
+      chartId: {
+        type: String,
+        default: 'line-chart'
+      },
+      datasetIdKey: {
+        type: String,
+        default: 'label'
+      },
+      width: {
+        type: Number,
+        default: 400
+      },
+      height: {
+        type: Number,
+        default: 400
+      },
+      cssClasses: {
+        default: '',
+        type: String
+      },
+      styles: {
+        type: Object,
+        default: () => {}
+      },
+      plugins: {
+        type: Array,
+        default: () => []
+      }
+    },
+    data() {
+      return {
+        chartData: {
+          labels: [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July'
+          ],
+          datasets: [
+            {
+              label: 'Data One',
+              backgroundColor: '#f87979',
+              data: [40, 39, 10, 40, 39, 80, 40]
             }
+          ]
+        },
+        chartOptions: {
+          responsive: true,
+          maintainAspectRatio: false
         }
+      }
     }
-}
-</script>
+  }
+  </script>
   
