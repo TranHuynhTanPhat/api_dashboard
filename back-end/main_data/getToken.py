@@ -16,8 +16,6 @@ headers = {
 response = requests.request("POST", url, headers=headers, data=payload)
 x = json.loads(response.text, object_hook=lambda d: SimpleNamespace(**d))
 
-
-
 token = x.access_token
 
 

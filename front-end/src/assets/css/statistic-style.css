@@ -2,9 +2,20 @@
   height: auto;
   width: 100%;
 
-  margin-top: 120px;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
 
-  padding: 20px 50px;
+  gap: 50px;
+}
+.statistic-main-top {
+  height: auto;
+  width: 100%;
+
+  margin-top: 120px;
+  padding:0px 50px;
 
   display: flex;
   flex-flow: row;
@@ -12,12 +23,37 @@
   align-items: center;
   flex-wrap: nowrap;
 
-  gap: 20px;
+  gap: 50px;
 }
 
-.statistic-main .statistic-main-left {
-  height: 660px;
-  width: 70%;
+.statistic-main-bottom {
+  height: auto;
+  width: 100%;
+
+
+  padding: 0 50px;
+
+  background-color: white;
+}
+
+.statistic-main-bottom-content{
+
+  height: auto;
+  width: 100%;
+
+  padding:50px 50px;
+
+  background-color: white;
+
+  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
+    rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+
+  border-radius: 15px;
+}
+
+.statistic-main-top .statistic-main-top-left {
+  height: auto;
+  width: 100%;
 
   padding: 20px 0 0 0;
 
@@ -29,11 +65,11 @@
   border-radius: 15px;
 }
 
-.statistic-main .statistic-main-right {
-  height: 660px;
-  width: 30%;
+.statistic-main-top .statistic-main-top-right {
+  height: auto;
+  width: 200%;
 
-  padding: 20px;
+  padding: 20px 0 0 0;
 
   background-color: white;
 
@@ -42,13 +78,9 @@
 
   border-radius: 15px;
 
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  align-items: center;
 }
 
-.statistic-main-left table {
+.statistic-main-top table {
   width: 100%;
   height: auto;
 
@@ -57,7 +89,7 @@
   border-collapse: collapse;
 }
 
-.statistic-main-left th {
+.statistic-main-top th {
   text-transform: uppercase;
   font-style: normal;
   font-weight: 600;
@@ -67,7 +99,14 @@
   padding: 15px 0 15px 0;
 }
 
-.statistic-main-left td {
+.statistic-main-top-left td {
+  padding: 15px 0 15px 0;
+
+  font-weight: 500;
+  color: #3d5554;
+}
+
+.statistic-main-top-right td {
   padding: 15px 0 15px 0;
 
   font-weight: 500;
@@ -76,9 +115,11 @@
   border-top: solid 0.5px #3d555426;
 }
 
-.statistic-main-left tr:hover {
+.statistic-main-top-left tr:hover {
+  cursor: pointer;
   background-color: #3d55542d;
 }
+
 
 .content {
   margin-left: 10px;
@@ -115,7 +156,7 @@
   color: #3d5554;
 }
 
-.note{
+.note {
   font-size: 36px;
   font-weight: 700;
   color: #3d555439;

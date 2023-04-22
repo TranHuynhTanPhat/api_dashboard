@@ -69,7 +69,7 @@ export default {
     plugins: {
       type: Array,
       default: () => [],
-    }
+    },
   },
   computed: {
     chartData() {
@@ -87,6 +87,22 @@ export default {
           {
             label: "Total number of routers with 'fail' status",
             data: this.$store.state.chartDashboard.stateFail,
+            backgroundColor: "rgba(190, 52, 85, 0.3)",
+            borderColor: "#BE3455",
+            borderWidth: 1,
+            pointBackgroundColor: "#BE3455",
+            pointBorderColor: "white",
+            pointBorderWidth: 0,
+            pointRadius: 3,
+            fill: {
+              target: "origin",
+              above: "rgba(190, 52, 85, 0.3)", // Area will be red above the origin
+              below: "rgba(190, 52, 85, 0.3)", // And blue below the origin
+            },
+          },
+          {
+            label: "Total number of routers with 'ok' status",
+            data: this.$store.state.chartDashboard.stateOk,
             backgroundColor: "rgba(26, 178, 167, 0.5)",
             borderColor: "#1AB2A7",
             borderWidth: 1,
@@ -98,22 +114,6 @@ export default {
               target: "origin",
               above: "rgba(26, 178, 167, 0.5)", // Area will be red above the origin
               below: "rgba(26, 178, 167, 0.5)", // And blue below the origin
-            },
-          },
-          {
-            label: "Total number of routers with 'ok' status",
-            data: this.$store.state.chartDashboard.stateOk,
-            backgroundColor: "rgba(190, 52, 85, 0.3)",
-            borderColor: "#BE3455",
-            borderWidth: 1,
-            pointBackgroundColor: "#BE3455",
-            pointBorderColor: "white",
-            pointBorderWidth: 0,
-            pointRadius: 3,
-            fill: {
-              target: "origin",
-              above: "rrgba(190, 52, 85, 0.3)", // Area will be red above the origin
-              below: "rgba(190, 52, 85, 0.3)", // And blue below the origin
             },
           },
         ],

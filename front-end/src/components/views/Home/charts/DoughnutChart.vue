@@ -96,8 +96,10 @@ export default {
             borderAlign: "center",
             borderColor: "transparent",
             borderRadius: 10,
-            offset:50,
-            hoverOffset:10
+            offset: 50,
+            hoverOffset: 100,
+            circumference: 180,
+            rotation: -90,
           },
         ],
       };

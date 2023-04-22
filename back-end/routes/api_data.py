@@ -99,13 +99,25 @@ async def get_inspection():
 
 @app_router.get("/get-inspection-detail")
 async def get_inspection_detail(id: str):
-    angid = [0 for i in range(0, 7)]
-    listA = data[id]
-    for a in listA:
-        temp = listA[a]
-        num = int(temp["angle_id"])
-        angid[num - 1] += 1
-    return {"angle_id":angid}
+    try:
+        detail_predict = []
+        angid = [0 for i in range(0, 7)]
+        listA = data[id]
+        for detail in listA:
+            temp = listA[detail]
+            num = int(temp["angle_id"])
+            angid[num - 1] += 1
+            detail_predict.append(
+                {
+                    "date": datetime.fromisoformat(temp["date"]),
+                    "angle_id": temp["angle_id"],
+                    "status": temp["status"],
+                    "predict_result": temp["predict_result"],
+                }
+            )
+        return {"angle_id": angid, "all_details": detail_predict}
+    except:
+        raise HTTPException(status_code=500)
 
 
 @app_router.post("/upload-avatar")
