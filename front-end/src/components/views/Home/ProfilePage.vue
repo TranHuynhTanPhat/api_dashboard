@@ -38,7 +38,5 @@ export default {
 </script>
 
 <style scoped>
-@import '../../../assets/css/nav-style.css';
-
 @import url('../../../assets/css/profile-style.css');
 </style>

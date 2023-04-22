@@ -12,9 +12,26 @@ app_router = APIRouter()
 @app_router.get("/users")
 async def find_all_users():
     result = usersEntity(db.find())
+    listUsers = []
     for r in result:
         r["image"] = ""
-    return {"status": "success", "data": result}
+        if r["role"] != 0:
+            length = len(r["accessed_at"])
+            acc = 0
+            if length > 0:
+                acc = r["accessed_at"][length - 1]
+            listUsers.append(
+                {
+                    "id": r["id"],
+                    "email": r["email"],
+                    "status": r["status"],
+                    "role": r["role"],
+                    "accessed_at": acc,
+                    "created_at": r["created_at"],
+                }
+            )
+
+    return {"status": "success", "data": listUsers}
 
 
 # RETRIEVE ACCOUNT BY ID
@@ -100,21 +117,25 @@ async def user_login(user: User):
         )
         acc = result["accessed_at"]
         length = len(acc)
-        
-        if length>0:
+
+        if length > 0:
             if acc[length - 1].date() != date.today():
                 result["accessed_at"].append(datetime.now())
-                db.find_one_and_update({"_id": ObjectId(result["id"])}, {"$set": dict(result)})
-                
-        else: 
+                db.find_one_and_update(
+                    {"_id": ObjectId(result["id"])}, {"$set": dict(result)}
+                )
+
+        else:
             result["accessed_at"].append(datetime.now())
-            db.find_one_and_update({"_id": ObjectId(result["id"])}, {"$set": dict(result)})
+            db.find_one_and_update(
+                {"_id": ObjectId(result["id"])}, {"$set": dict(result)}
+            )
         return {
             "data": {
                 "id": result["id"],
                 "email": result["email"],
                 "status": result["status"],
-                "role": result["role"]
+                "role": result["role"],
             },
             "token": "token",
         }

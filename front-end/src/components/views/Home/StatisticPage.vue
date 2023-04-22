@@ -9,8 +9,8 @@
             <thead>
               <th style="padding-left: 20px">ID</th>
               <th>Status OK</th>
-              <th width="15%">From</th>
-              <th width="15%">To</th>
+              <th>From</th>
+              <th>To</th>
             </thead>
             <tbody>
               <tr
@@ -19,7 +19,7 @@
                 @click="getDetail(item.id)"
               >
                 <td>
-                  <p class="content">{{ item["id"] }}</p>
+                  <p class="content-start">{{ item["id"] }}</p>
                 </td>
                 <td v-if="item['state_ok'] < 20">
                   <p style="color: red; font-weight: 800">
@@ -39,10 +39,12 @@
                   <p>{{ item["end"] }}</p>
                 </td>
                 <td>
-                  <font-awesome-icon
-                    icon="fa-solid fa-chevron-right"
-                    style="color: #3d5554"
-                  />
+                  <p class="content-end">
+                    <font-awesome-icon
+                      icon="fa-solid fa-chevron-right"
+                      style="color: #3d5554"
+                    />
+                  </p>
                 </td>
               </tr>
             </tbody>
@@ -83,10 +85,10 @@
             <tbody>
               <tr v-for="item in sortListAllDetails" :key="item.id">
                 <td>
-                  <p class="content">{{ item["date"] }}</p>
+                  <p class="content-start">{{ item["date"] }}</p>
                 </td>
                 <td>
-                  <p>{{ item["angle_id"] }}%</p>
+                  <p>{{ item["angle_id"] }}</p>
                 </td>
                 <td>
                   <p

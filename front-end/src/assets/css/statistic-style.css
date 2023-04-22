@@ -15,7 +15,7 @@
   width: 100%;
 
   margin-top: 120px;
-  padding:0px 50px;
+  padding: 0px 50px;
 
   display: flex;
   flex-flow: row;
@@ -23,25 +23,23 @@
   align-items: center;
   flex-wrap: nowrap;
 
-  gap: 50px;
+  gap: 0px;
 }
 
 .statistic-main-bottom {
   height: auto;
   width: 100%;
 
-
   padding: 0 50px;
 
   background-color: white;
 }
 
-.statistic-main-bottom-content{
-
+.statistic-main-bottom-content {
   height: auto;
   width: 100%;
 
-  padding:50px 50px;
+  padding: 50px 50px;
 
   background-color: white;
 
@@ -69,6 +67,8 @@
   height: auto;
   width: 200%;
 
+  margin-left: 50px;
+
   padding: 20px 0 0 0;
 
   background-color: white;
@@ -77,7 +77,6 @@
     rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
 
   border-radius: 15px;
-
 }
 
 .statistic-main-top table {
@@ -120,9 +119,12 @@
   background-color: #3d55542d;
 }
 
-
-.content {
+.content-start {
   margin-left: 10px;
+}
+
+.content-end {
+  margin: 0 10px 0 10px;
 }
 
 .footer-table {
