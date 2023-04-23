@@ -9,7 +9,7 @@
       <div>
         <p class="email">{{ email }}</p>
       </div>
-      <button>Change Password</button>
+      <button @click="handleClick">Change Password</button>
     </div>
   </div>
 </template>
@@ -33,6 +33,11 @@ export default {
   },
   created() {
     this.$store.commit('isProfile')
+  },
+  methods:{
+    handleClick(){
+      this.$router.push({name:"ChangePassword"})
+    }
   }
 }
 </script>

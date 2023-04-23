@@ -9,8 +9,6 @@
 // import axios from 'axios';
 import AppFooter from '../AppFooter.vue'
 
-
-
 export default {
     name: "MainPage",
     data() {

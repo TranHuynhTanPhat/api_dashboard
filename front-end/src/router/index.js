@@ -68,7 +68,8 @@ const routes = [
     path: '/intro',
     name: 'Introduction',
     component: () => import('../components/views/Home/IntroPage.vue')
-  }
+  },
+  { path: '*', component: () => import('../components/views/errors/404.vue') }
 ]
 
 const router = new VueRouter({
