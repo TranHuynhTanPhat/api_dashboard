@@ -78,6 +78,7 @@
           <table>
             <thead>
               <th style="padding-left: 20px">Date</th>
+              <th>Time</th>
               <th>Angle_id</th>
               <th>Status</th>
               <th>Predict_result</th>
@@ -86,6 +87,9 @@
               <tr v-for="item in sortListAllDetails" :key="item.id">
                 <td>
                   <p class="content-start">{{ item["date"] }}</p>
+                </td>
+                <td>
+                  <p>{{ item["time"] }}</p>
                 </td>
                 <td>
                   <p>{{ item["angle_id"] }}</p>

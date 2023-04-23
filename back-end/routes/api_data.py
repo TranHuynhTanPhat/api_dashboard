@@ -107,9 +107,14 @@ async def get_inspection_detail(id: str):
             temp = listA[detail]
             num = int(temp["angle_id"])
             angid[num - 1] += 1
+
+            time = datetime.fromisoformat(temp["date"])
+            dt = time.strftime("%Y-%m-%d %H:%M:%S").split(" ")
+
             detail_predict.append(
                 {
-                    "date": datetime.fromisoformat(temp["date"]),
+                    "date": dt[0],
+                    "time": dt[1],
                     "angle_id": temp["angle_id"],
                     "status": temp["status"],
                     "predict_result": temp["predict_result"],
