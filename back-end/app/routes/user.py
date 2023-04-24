@@ -22,17 +22,20 @@ async def find_all_users():
         r["image"] = ""
         if r["role"] != 0:
             length = len(r["accessed_at"])
-            acc = 0
+            dtAcc = ["NaN", "NaN"]
             if length > 0:
-                acc = r["accessed_at"][length - 1]
+                time = datetime.fromisoformat(str(r["accessed_at"][length - 1]))
+                dtAcc = time.strftime("%Y/%m/%d %H:%M:%S").split(" ")
+            time = datetime.fromisoformat(str(r["created_at"]))
+            dtCre = time.strftime("%Y/%m/%d %H:%M:%S").split(" ")
             listUsers.append(
                 {
                     "id": r["id"],
                     "email": r["email"],
                     "status": r["status"],
                     "role": r["role"],
-                    "accessed_at": acc,
-                    "created_at": r["created_at"],
+                    "accessed_at": {"date": dtAcc[0], "time": dtAcc[1]},
+                    "created_at": {"date": dtCre[0], "time": dtCre[1]},
                 }
             )
 
@@ -78,47 +81,68 @@ async def register(user: User):
 # UPDATE ACCOUNT BY ID
 @app_router.put("/user/{id}")
 async def update_user(id: str, user: User):
-    # check existed email
-    check = usersEntity(db.find({"email": str(user.email)}))
+    try:
+        # check existed email
+        findUser = userEntity(db.find_one({"_id": ObjectId(id)}))
 
-    # if email's existed return status 409 (admin's role is 1)
-    # if role = 0 or out range[0;2] return status 401
-    # else return status 200
+        # if email's existed return status 409 (admin's role is 1)
+        # if role = 0 or out range[0;2] return status 401
+        # else return status 200
 
-    if len(check) != 0:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Can't update email: {user.email}",
-        )
-    elif int(user.role) == 0 or int(user.role) > 2 or int(user.role) < 0:
+        if findUser["email"] != user.email:
+            check = usersEntity(db.find({"email": user.email}))
+            if len(check) != 0:
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail=f"Can't update email: {user.email}",
+                )
+            elif int(user.role) == 0 or int(user.role) > 2 or int(user.role) < 0:
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Can't update account",
+                )
+
+        if user.password == "":
+            user.password = findUser["password"]
+        if user.email == "":
+            user.email = findUser["email"]
+        if user.status == 0:
+            user.status == findUser["status"]
+        user.accessed_at = findUser["accessed_at"]
+        user.created_at = findUser["created_at"]
+        user.image = findUser["image"]
+        db.find_one_and_update({"_id": ObjectId(id)}, {"$set": dict(user)})
+        return {"status": "success"}
+    except:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Can't update account"
         )
-    else:
-        db.find_one_and_update({"_id": ObjectId(id)}, {"$set": dict(user)})
-        return {"status": "success"}
 
 
 # DELETE ACCOUNT BY ID
 @app_router.delete("/user/{id}")
 async def delete_user(id: str):
-    check = userEntity(db.find_one({"_id": ObjectId(id)}))
-    if check["role"] != 0:
-        db.find_one_and_delete({"_id": ObjectId(id)})
-        return {"status": "success"}
-    else:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="You can delete this account!",
-        )
+    try:
+        check = userEntity(db.find_one({"_id": ObjectId(id)}))
+        if check["role"] != 0:
+            db.find_one_and_delete({"_id": ObjectId(id)})
+            return {"status": "success"}
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="You can delete this account!",
+            )
+    except:
+        raise HTTPException(status_code=400, detail="Not found")
 
 
 # LOGIN USER
 @app_router.post("/user/login")
 async def user_login(user: User):
     try:
+        print(user.password)
         result = userEntity(
-            db.find_one({"email": str(user.email), "password": str(user.password)})
+            db.find_one({"email": str(user.email), "password": user.password})
         )
         acc = result["accessed_at"]
         length = len(acc)

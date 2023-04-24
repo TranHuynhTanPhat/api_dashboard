@@ -1,13 +1,7 @@
 import axios from 'axios'
 
 axios.defaults.baseURL = 'http://0.0.0.0:8000/'
-// axios.defaults.headers.common = {
-//     "X-Requested-With": "XMLHttpRequest",
-//     "X-CSRFToken": "example-of-custom-header",
-//     "accept": "application/json",
-//     "Content-Type": "application/json",
-//     "Access-Control-Allow-Origin": "*"
-// };
+
 
 export const REGISTER = 'user/register'
 export const LOGIN = 'user/login'
@@ -20,3 +14,4 @@ export const GET_INSPECTION = "get-inspection"
 export const GET_INSPECTION_DETAIL = "get-inspection-detail"
 export const GET_INSPECTION_ALL_DETAILS = "get-inspection-all-details"
 export const GET_USER = "users"
+export const UPDATE_DELETE_USER = "user"

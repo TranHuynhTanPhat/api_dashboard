@@ -2,67 +2,120 @@
   <div>
     <Navbar />
     <div class="table-main">
-      <div class="table-contain-main">
-        <p class="h1" style="margin: 5px 0 15px 20px">List Users</p>
-        <table>
-          <thead>
-            <th style="padding-left: 20px">ID</th>
-            <th>Email</th>
-            <th>Status</th>
-            <th>Role</th>
-            <th>Accessed_at</th>
-            <th>Created_at</th>
-          </thead>
-          <tbody>
-            <tr v-for="item in sortListUsers" :key="item.id">
-              <td>
-                <p class="content-start">{{ item["id"] }}</p>
-              </td>
-              <td>
-                <p>{{ item["email"] }}</p>
-              </td>
-              <td>
-                <p>{{ item["status"] }}</p>
-              </td>
-              <td>
-                <p>{{ item["role"] }}</p>
-              </td>
-              <td>
-                <p>{{ item["accessed_at"] }}</p>
-              </td>
-              <td>
-                <p>{{ item["created_at"] }}</p>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="footer-table" v-if="this.listUsers.length > this.pageSize">
-          <button @click="prevPage" v-if="this.currentPage != 1">
-            <font-awesome-icon
-              icon="fa-solid fa-chevron-left"
-              size="2xl"
-              style="color: #3d5554"
-            />
-          </button>
-          <p>{{ this.currentPage }}</p>
-          <button
-            @click="nextPage"
-            v-if="this.currentPage * 10 < this.listUsers.length"
+      <div class="table-main-top">
+        <div class="table-main-top-left">
+          <p class="h1" style="margin: 5px 0 15px 20px">List Users</p>
+          <table>
+            <thead>
+              <th style="padding-left: 20px">ID</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Role</th>
+              <th>Accessed_at</th>
+              <th>Created_at</th>
+            </thead>
+            <tbody>
+              <tr v-for="item in sortListUsers" :key="item.id">
+                <td @click="handleClick(item)">
+                  <p class="content-start">{{ item["id"] }}</p>
+                </td>
+                <td @click="handleClick(item)">
+                  <p>{{ item["email"] }}</p>
+                </td>
+                <td @click="handleClick(item)">
+                  <p>{{ item["status"] }}</p>
+                </td>
+                <td @click="handleClick(item)">
+                  <p>{{ item["role"] }}</p>
+                </td>
+                <td @click="handleClick(item)">
+                  <p>
+                    {{ item["accessed_at"]["date"] }} at
+                    {{ item["accessed_at"]["time"] }}
+                  </p>
+                </td>
+                <td @click="handleClick(item)">
+                  <p>
+                    {{ item["created_at"]["date"] }} at
+                    {{ item["created_at"]["time"] }}
+                  </p>
+                </td>
+                <td>
+                  <button
+                    @click.prevent="handleDelete(item['id'])"
+                    style="padding: 0 10px"
+                  >
+                    <font-awesome-icon
+                      icon="fa-solid fa-trash"
+                      size="xl"
+                      style="color: #ff0000"
+                    />
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div
+            class="footer-table"
+            v-if="this.listUsers.length > this.pageSize"
           >
-            <font-awesome-icon
-              icon="fa-solid fa-chevron-right"
-              size="2xl"
-              style="color: #3d5554"
-            />
-          </button>
+            <button @click="prevPage" v-if="this.currentPage != 1">
+              <font-awesome-icon
+                icon="fa-solid fa-chevron-left"
+                size="2xl"
+                style="color: #3d5554"
+              />
+            </button>
+            <p>{{ this.currentPage }}</p>
+            <button
+              @click="nextPage"
+              v-if="this.currentPage * 10 < this.listUsers.length"
+            >
+              <font-awesome-icon
+                icon="fa-solid fa-chevron-right"
+                size="2xl"
+                style="color: #3d5554"
+              />
+            </button>
+          </div>
+          <div class="footer-table"></div>
         </div>
-        <div class="footer-table"></div>
+        <div
+          class="table-main-top-right"
+          v-if="this.currentUser != 'Undefined'"
+        >
+          <div class="form-update">
+            <div class="form-input">
+              <label for="email">Email:</label>
+              <input
+                type="email"
+                :placeholder="this.currentUser['email']"
+                name="email"
+                id="inputEmail"
+              />
+            </div>
+            <div class="form-input">
+              <label for="status">Status:</label>
+              <input
+                type="number"
+                :placeholder="this.currentUser['status']"
+                name="status"
+                id="inputStatus"
+              />
+            </div>
+            <button @click.prevent="handleUpdate">Update</button>
+          </div>
+        </div>
+        <div class="table-main-top-rignt" v-else>
+          <p class="note">Click row to show chart !</p>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
 import axios from "axios";
+import { UPDATE_DELETE_USER } from "../../../axios";
 import Navbar from "../../AppNav.vue";
 import { GET_USER } from "@/axios";
 
@@ -73,6 +126,7 @@ export default {
       listUsers: [],
       pageSize: 10,
       currentPage: 1,
+      currentUser: "Undefined",
     };
   },
   components: {
@@ -105,6 +159,40 @@ export default {
     prevPage() {
       if (this.currentPage > 1) this.currentPage--;
     },
+    handleClick(item) {
+      if (item == this.currentUser) {
+        this.currentUser = "Undefined";
+      } else {
+        this.currentUser = item;
+      }
+    },
+    async handleUpdate() {
+      var ipEmail = document.getElementById("inputEmail").value;
+      var ipStatus = document.getElementById("inputStatus").value;
+
+      if (ipEmail != "") {
+        this.currentUser["email"] = ipEmail;
+      }
+      if (ipStatus != "") {
+        this.currentUser["status"] = ipStatus;
+      }
+
+      await axios.put(UPDATE_DELETE_USER + "/" + this.currentUser["id"], {
+        email: this.currentUser["email"],
+        status: this.currentUser["status"],
+      });
+    },
+    async handleDelete(id) {
+      await axios
+        .delete(UPDATE_DELETE_USER + "/" + id)
+        .then((this.currentUser = "Undefined"))
+        .catch((ex) => console.log(ex));
+      await axios.get(GET_USER).then((res) => {
+        if (res.status == 200) {
+          this.listUsers = res.data.data;
+        }
+      });
+    },
   },
   computed: {
     sortListUsers() {
@@ -119,5 +207,5 @@ export default {
 </script>
 <style>
 @import url("../../../assets/css/nav-style.css");
-@import url('../../../assets/css/table-style.css');
+@import url("../../../assets/css/table-style.css");
 </style>

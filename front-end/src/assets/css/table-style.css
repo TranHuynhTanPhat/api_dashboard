@@ -1,93 +1,188 @@
 .table-main {
-    height: auto;
-    width: 100%;
-  
-    margin-top: 120px;
-    padding: 0 50px;
-  }
-  
-  .table-contain-main {
-    height: auto;
-    width: 100%;
-  
-    padding: 20px 0 0 0;
-  
-    background-color: white;
-  
-    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
-      rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
-  
-    border-radius: 15px;
-  }
-  
-  .table-contain-main table {
-    width: 100%;
-    height: auto;
-  
-    text-align: left;
-  
-    border-collapse: collapse;
-  }
-  
-  .table-contain-main th {
-    text-transform: uppercase;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    color: #3d555426;
-  
-    padding: 15px 0 15px 0;
-  }
-  
-  .table-contain-main td {
-    padding: 15px 0 15px 0;
-  
-    font-weight: 500;
-    color: #3d5554;
-  
-    border-top: solid 0.5px #3d555426;
-  }
-  
-  .table-contain-main tr:hover {
-    cursor: pointer;
-    background-color: #3d55542d;
-  }
-  
-  .h1 {
-    font-size: 24px;
-    font-weight: 800;
-    color: #3d5554;
-  }
-  
-  .footer-table {
-    display: flex;
-    flex-flow: row;
-    justify-content: center;
-    align-items: center;
-  
-    gap: 10px;
-  
-    padding: 15px 0 20px 0;
-  }
-  
-  .footer-table p {
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #3d55542d;
-  
-    font-weight: 600;
-    font-size: 12px;
-    color: #3d5554;
-  }
-  
-  .footer-table button {
-    padding: 5px;
-  }
-  
-  .content-start {
-    margin-left: 10px;
-  }
-  
-  .content-end {
-    margin: 0 10px 0 10px;
-  }
+  height: auto;
+  width: 100%;
+
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+
+  gap: 50px;
+}
+.table-main-top {
+  height: auto;
+  width: 100%;
+
+  margin-top: 120px;
+  padding: 0px 50px;
+
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+
+  gap: 0px;
+}
+
+.table-main-top .table-main-top-left {
+  height: auto;
+  width: 100%;
+
+  padding: 20px 0 0 0;
+
+  background-color: white;
+
+  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
+    rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+
+  border-radius: 15px;
+}
+
+.table-main-top .table-main-top-right {
+  height: auto;
+  width: 50%;
+
+  margin-left: 50px;
+
+  padding: 20px 100px;
+
+  background-color: white;
+
+  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
+    rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+
+  border-radius: 15px;
+}
+
+.table-main-top-right .form-update {
+  height: auto;
+  width: 100%;
+
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.form-update .form-input {
+  height: auto;
+  width: 100%;
+
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.form-input input {
+  width: 100%;
+  padding: 10px;
+
+  box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
+    rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+  border-radius: 10px;
+}
+
+.form-input input:focus {
+  border-color: #3d5554;
+  border-style: solid;
+  border-width: 0px;
+}
+
+.form-update button{
+  padding: 10px 15px; 
+
+  height: auto;
+  width: auto;
+
+  background-color: rgb(255, 77, 77);
+
+  border-radius: 10px;
+}
+
+.form-update button:hover{
+  background-color: rgba(255, 77, 77, 0.365);
+}
+
+.table-main-top table {
+  width: 100%;
+  height: auto;
+
+  text-align: left;
+
+  border-collapse: collapse;
+}
+
+.table-main-top th {
+  text-transform: uppercase;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  color: #3d555426;
+
+  padding: 15px 0 15px 0;
+}
+
+.table-main-top-left td {
+  padding: 15px 0 15px 0;
+
+  font-weight: 500;
+  color: #3d5554;
+}
+
+.table-main-top-left tr:hover {
+  cursor: pointer;
+  background-color: #3d55542d;
+}
+
+.content-start {
+  margin-left: 10px;
+}
+
+.content-end {
+  margin: 0 10px 0 10px;
+}
+
+.footer-table {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 15px 0 20px 0;
+}
+
+.footer-table p {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #3d55542d;
+
+  font-weight: 600;
+  font-size: 12px;
+  color: #3d5554;
+}
+
+.footer-table button {
+  padding: 5px;
+}
+
+.h1 {
+  font-size: 24px;
+  font-weight: 800;
+  color: #3d5554;
+}
+
+.note {
+  font-size: 36px;
+  font-weight: 700;
+  color: #3d555439;
+
+  text-transform: uppercase;
+  text-align: center;
+}

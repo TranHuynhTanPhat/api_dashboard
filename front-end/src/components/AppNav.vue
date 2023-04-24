@@ -7,7 +7,7 @@
                 alt="Setting"></router-link></div>
         </div>
         <div class="nav-contain-right">
-          <div class="item" :class="{ active: isTable }"><router-link to="./table">
+          <div class="item" :class="{ active: isTable }" v-if="role==0"><router-link to="./table">
               <img src="../assets/images/nav_table.png" alt="Table">
             </router-link></div>
 
@@ -39,11 +39,11 @@ export default {
       isDashboard: this.$store.state.nav.isDashboard,
       isStatistic: this.$store.state.nav.isStatistic,
       isTable: this.$store.state.nav.isTable,
-      isSetting: this.$store.state.nav.isSetting
+      isSetting: this.$store.state.nav.isSetting,
+      role:localStorage.getItem("role")
     }
   },
   computed: {
-
 
   }
 };

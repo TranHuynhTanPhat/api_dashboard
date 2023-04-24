@@ -31,7 +31,8 @@ for lv1 in data:
             status_ok += 1
             stateOk[num - 1] += 1
 
-        dates.append(datetime.fromisoformat(temp["date"]).date())
+        time = datetime.fromisoformat(temp["date"]).date()
+        dates.append(time.strftime("%Y/%m/%d"))
 
     inspection.append(
         {
@@ -42,21 +43,3 @@ for lv1 in data:
         }
     )
 
-
-# for lv1 in data:
-#     for lv2 in data[lv1]:
-#         temp = data[lv1][lv2]
-#         value = temp['date']
-#         date = datetime.fromisoformat(value).date()
-#         f.write(str(date) + "\n")
-
-
-# listData=[]
-# for lv1 in data:
-#   ob1=[]
-#   for lv2 in data[lv1]:
-#     temp = data[lv1][lv2]
-#     print(temp)
-#     m = routerModel(lv2,temp['date'],temp['angle_id'],temp['status'], temp['predict_result'])
-#     ob1.append(m)
-#   listData.append(ob1)
