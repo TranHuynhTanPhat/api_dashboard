@@ -22,13 +22,4 @@ export default {
     methods: {
     },
 }
-    // mounted() {
-    //     let user = localStorage.getItem('user-info')
-
-    // }
-
 </script>
-
-<style>
-
-</style>

@@ -75,6 +75,7 @@ export default ({
 })
 </script>
 <style>
+@import url("../../../assets/css/nav-style.css");
 @import '../../../assets/css/form-style.css';
 
 .text-contain .forgotpassword a:hover {

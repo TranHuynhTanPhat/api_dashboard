@@ -1,11 +1,7 @@
-version: '3'
+version: '3.8'
 services:
-    web:
-        build: .
-        stdin_open: true
-        tty: true
-        ports: 
-            - "8080:8080"
-        volumes:
-            - "/app/node_modules" 
-            - ".:/app"
+  app:
+    build: .
+    command: yarn serve --reload
+    ports:
+      - "8080:8080"

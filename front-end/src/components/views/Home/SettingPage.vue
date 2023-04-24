@@ -25,5 +25,6 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style>
+@import url("../../../assets/css/nav-style.css");
 </style>

@@ -117,6 +117,7 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style>
+@import url("../../../assets/css/nav-style.css");
 @import url('../../../assets/css/table-style.css');
 </style>

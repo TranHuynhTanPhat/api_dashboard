@@ -62,6 +62,7 @@ export default ({
 })
 </script>
 <style>
+@import url("../../../assets/css/nav-style.css");
 @import '../../../assets/css/form-style.css';
 
 form .otp {
