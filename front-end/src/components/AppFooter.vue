@@ -7,9 +7,9 @@
         <div class="contain">
             <span class="title">Useful link</span>
             <div class="content">
-                <span><a href="/home/dashboard">Home</a></span>
-                <span><a href="/home/statistic">Statistic</a></span>
-                <span><a href="/home/table">Data table</a></span>
+                <span><a href="/dashboard">Home</a></span>
+                <span><a href="/statistic">Statistic</a></span>
+                <span><a href="/table">Data table</a></span>
                 <span><div class="important" @click.prevent="handleSendToSignUp">Sign up now</div></span>
             </div>
         </div>
