@@ -1,6 +1,6 @@
 import requests
 import json
-from main_data.getToken import token
+from app.main_data.getToken import token
 from datetime import datetime, date
 from array import array
 

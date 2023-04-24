@@ -6,6 +6,11 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    name: 'Introduction',
+    component: () => import('../components/views/Home/IntroPage.vue')
+  },
+  {
+    path: '/home',
     name: 'Home',
     component: () => import('../components/layout/MainPage.vue'),
     children: [
@@ -64,11 +69,7 @@ const routes = [
       },
 
     ]
-  }, {
-    path: '/intro',
-    name: 'Introduction',
-    component: () => import('../components/views/Home/IntroPage.vue')
-  },
+  }, 
   { path: '*', component: () => import('../components/views/errors/404.vue') }
 ]
 

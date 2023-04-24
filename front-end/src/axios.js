@@ -1,6 +1,13 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://127.0.0.1:8000/'
+axios.defaults.baseURL = 'http://0.0.0.0:8000/'
+// axios.defaults.headers.common = {
+//     "X-Requested-With": "XMLHttpRequest",
+//     "X-CSRFToken": "example-of-custom-header",
+//     "accept": "application/json",
+//     "Content-Type": "application/json",
+//     "Access-Control-Allow-Origin": "*"
+// };
 
 export const REGISTER = 'user/register'
 export const LOGIN = 'user/login'

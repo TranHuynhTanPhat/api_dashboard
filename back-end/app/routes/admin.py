@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
-from models.user import User
-from config.db import db
-from schemas.user import userEntity, usersEntity
+from app.models.user import User
+from app.config.db import db
+from app.schemas.user import userEntity, usersEntity
 from bson import ObjectId
 
 app_router = APIRouter()

@@ -1,15 +1,15 @@
 <template>
     <footer>
-        <div class="containlogo"><a href="/intro" target="_parent"><img src="../assets/images/logo.png" alt="Logo Website"
+        <div class="containlogo"><a href="/" target="_parent"><img src="../assets/images/logo.png" alt="Logo Website"
                     height="117px" width="130px" /></a>
             <span>API is the product of the course project</span>
         </div>
         <div class="contain">
             <span class="title">Useful link</span>
             <div class="content">
-                <span><a href="#">Home</a></span>
-                <span><a href="#">Statistic</a></span>
-                <span><a href="#">Data table</a></span>
+                <span><a href="/home/dashboard">Home</a></span>
+                <span><a href="/home/statistic">Statistic</a></span>
+                <span><a href="/home/table">Data table</a></span>
                 <span><div class="important" @click.prevent="handleSendToSignUp">Sign up now</div></span>
             </div>
         </div>
