@@ -4,10 +4,7 @@
     <div class="table-main">
       <div class="table-main-top">
         <div class="table-main-top-left">
-          <v-alert dense border="left" type="warning" :value="alert">
-            I'm a dense alert with the <strong>border</strong> prop and a
-            <strong>type</strong> of warning
-          </v-alert>
+          <AlertDialog :show="this.show" @close="close"  @load-user="loadUser"/>
           <p class="h1" style="margin: 5px 0 15px 20px">List Users</p>
           <table>
             <thead>
@@ -17,6 +14,25 @@
               <th>Role</th>
               <th>Accessed_at</th>
               <th>Created_at</th>
+              <th
+                style="
+                  text-align: center;
+                  vertical-align: middle;
+                  padding-right: 10px;
+                "
+              >
+                <button
+                  style="
+                    color: #3d5554;
+                    padding: 5px 5px;
+                    background-color: #3d55544c;
+                    border-radius: 10px;
+                  "
+                  @click="handleAddAlert"
+                >
+                  + Add User
+                </button>
+              </th>
             </thead>
             <tbody>
               <tr v-for="item in sortListUsers" :key="item.id">
@@ -44,7 +60,13 @@
                     {{ item["created_at"]["time"] }}
                   </p>
                 </td>
-                <td>
+                <td
+                  style="
+                    text-align: center;
+                    vertical-align: middle;
+                    padding-right: 10px;
+                  "
+                >
                   <button
                     @click.prevent="handleDelete(item['id'])"
                     style="padding: 0 10px"
@@ -123,6 +145,8 @@ import { UPDATE_DELETE_USER } from "../../../axios";
 import Navbar from "../../AppNav.vue";
 import { GET_USER } from "@/axios";
 
+import AlertDialog from "@/components/views/Home/AlertDialog.vue";
+
 export default {
   name: "TablePage",
   data() {
@@ -131,11 +155,12 @@ export default {
       pageSize: 10,
       currentPage: 1,
       currentUser: "Undefined",
-      alert: false,
+      show: false,
     };
   },
   components: {
     Navbar,
+    AlertDialog,
   },
   mounted() {
     // localStorage.getItem("role") != 0
@@ -149,11 +174,7 @@ export default {
   async created() {
     this.$store.commit("isTable");
 
-    await axios.get(GET_USER).then((res) => {
-      if (res.status == 200) {
-        this.listUsers = res.data.data;
-      }
-    });
+    this.loadUser();
   },
   methods: {
     nextPage() {
@@ -187,17 +208,28 @@ export default {
       });
     },
     async handleDelete(id) {
-      this.alert = true;
-      console.log(id);
-      // await axios
-      //   .delete(UPDATE_DELETE_USER + "/" + id)
-      //   .then((this.currentUser = "Undefined"))
-      //   .catch((ex) => console.log(ex));
-      // await axios.get(GET_USER).then((res) => {
-      //   if (res.status == 200) {
-      //     this.listUsers = res.data.data;
-      //   }
-      // });
+      await axios
+        .delete(UPDATE_DELETE_USER + "/" + id)
+        .then((this.currentUser = "Undefined"))
+        .catch((ex) => console.log(ex));
+      await axios.get(GET_USER).then((res) => {
+        if (res.status == 200) {
+          this.listUsers = res.data.data;
+        }
+      });
+    },
+    handleAddAlert() {
+      this.show = true;
+    },
+    close() {
+      this.show = false;
+    },
+    async loadUser() {
+      await axios.get(GET_USER).then((res) => {
+        if (res.status == 200) {
+          this.listUsers = res.data.data;
+        }
+      });
     },
   },
   computed: {

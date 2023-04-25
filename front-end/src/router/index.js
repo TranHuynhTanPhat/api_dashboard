@@ -70,7 +70,7 @@ const routes = [
 
     ]
   }, 
-  { path: '*', component: () => import('../components/views/errors/404.vue') }
+  { path: '*', component: () => import('../components/views/errors/404.vue') },
 ]
 
 const router = new VueRouter({

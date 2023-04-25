@@ -71,6 +71,7 @@ async def register(user: User):
         raise HTTPException(status_code=406, detail="Not Acceptable")
     else:
         user.password = get_hashed_password(user.password)
+        user.created_at = datetime.now()
         _id = db.insert_one(dict(user))
         result = userEntity(db.find_one({"_id": _id.inserted_id}))
         return {

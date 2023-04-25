@@ -14,10 +14,10 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 /* import specific icons */
-import { faUsers, faUserPlus, faGlobe, faClipboardCheck, faChevronRight, faChevronLeft, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faUsers, faUserPlus, faGlobe, faClipboardCheck, faChevronRight, faChevronLeft, faTrash, faHouse } from '@fortawesome/free-solid-svg-icons'
 
 /* add icons to the library */
-library.add(faUsers, faUserPlus, faGlobe, faClipboardCheck, faChevronRight, faChevronLeft, faTrash )
+library.add(faUsers, faUserPlus, faGlobe, faClipboardCheck, faChevronRight, faChevronLeft, faTrash, faHouse )
 
 
 /* add font awesome icon component */
