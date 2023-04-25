@@ -111,7 +111,7 @@
           </div>
         </div>
         <div class="table-main-top-rignt" v-else>
-          <p class="note">Click row to show chart !</p>
+          <p class="note">Click row to update user !</p>
         </div>
       </div>
     </div>
