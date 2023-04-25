@@ -15,8 +15,12 @@ export default {
   components: {
     Navbar
   }, mounted() {
-    if (localStorage.getItem('id') === null || localStorage.getItem('token') === null) {
-      this.$router.push({ name: 'Signin' })
+    if (
+      localStorage.getItem("id") == null ||
+      localStorage.getItem("access_token") == null
+    ) {
+
+      this.$router.push({ name: "Signin" });
     }
 
   },

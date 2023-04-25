@@ -32,8 +32,8 @@ export default {
   },
   mounted() {
     if (
-      localStorage.getItem("id") === null ||
-      localStorage.getItem("token") === null
+      localStorage.getItem("id") != null ||
+      localStorage.getItem("access_token") != null
     ) {
       this.$router.push({ name: "Signin" });
     }

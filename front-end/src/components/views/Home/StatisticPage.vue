@@ -74,6 +74,15 @@
           class="statistic-main-top-right"
           v-if="this.currentId != 'Undefined'"
         >
+          <DoughnutChart />
+        </div>
+        <div class="statistic-main-top-rignt" v-else></div>
+      </div>
+      <div class="statistic-main-bottom">
+        <div
+          class="statistic-main-bottom-content"
+          v-if="this.$store.state.chartDashboard.angleId != null"
+        >
           <p class="h1" style="margin: 5px 0 15px 20px">{{ this.currentId }}</p>
           <table>
             <thead>
@@ -136,15 +145,6 @@
           </div>
           <div class="footer-table" v-else style="padding-bottom: 20px"></div>
         </div>
-        <div class="statistic-main-top-rignt" v-else></div>
-      </div>
-      <div class="statistic-main-bottom">
-        <div
-          class="statistic-main-bottom-content"
-          v-if="this.$store.state.chartDashboard.angleId != null"
-        >
-          <DoughnutChart />
-        </div>
         <div class="statistic-main-bottom-content" v-else>
           <p class="note">Click row to show chart !</p>
         </div>
@@ -176,9 +176,10 @@ export default {
   },
   mounted() {
     if (
-      localStorage.getItem("id") === null ||
-      localStorage.getItem("token") === null
+      localStorage.getItem("id") == null ||
+      localStorage.getItem("access_token") == null
     ) {
+
       this.$router.push({ name: "Signin" });
     }
   },

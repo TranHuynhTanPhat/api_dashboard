@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, status
 from app.models.user import User
 from app.config.db import db
 from app.schemas.user import userEntity, usersEntity
+from app.utils.utils import get_hashed_password, verify_password, create_access_token, create_refresh_token
 from bson import ObjectId
 from datetime import datetime, date
 
@@ -52,12 +53,10 @@ async def find_user_by_id(id: str):
 # REGISTER ACCOUNT
 @app_router.post("/user/register")
 async def register(user: User):
+    if user.email == "" or user.password == "":
+        raise HTTPException(status_code=400, detail="Can't create account")
     # check existed email
     check = usersEntity(db.find({"email": str(user.email)}))
-
-    # if email's existed return status 409 (admin's role is 1)
-    # if role = 0 or out range[0;2] return status 401
-    # else return status 200
 
     if len(check) != 0:
         raise HTTPException(
@@ -71,6 +70,7 @@ async def register(user: User):
     elif user.email == "" or user.password == "":
         raise HTTPException(status_code=406, detail="Not Acceptable")
     else:
+        user.password = get_hashed_password(user.password)
         _id = db.insert_one(dict(user))
         result = userEntity(db.find_one({"_id": _id.inserted_id}))
         return {
@@ -96,12 +96,16 @@ async def update_user(id: str, user: User):
                     status_code=status.HTTP_409_CONFLICT,
                     detail=f"Can't update email: {user.email}",
                 )
-            elif int(user.role) == 0 or int(user.role) > 2 or int(user.role) < 0:
+            elif (
+                int(user.role) == 0
+                or int(user.role) > 2
+                or int(user.role) < 0
+                or findUser["role"] == 0
+            ):
                 raise HTTPException(
                     status_code=status.HTTP_401_UNAUTHORIZED,
                     detail="Can't update account",
                 )
-
         if user.password == "":
             user.password = findUser["password"]
         if user.email == "":
@@ -141,9 +145,11 @@ async def delete_user(id: str):
 async def user_login(user: User):
     try:
         print(user.password)
-        result = userEntity(
-            db.find_one({"email": str(user.email), "password": user.password})
-        )
+        result = userEntity(db.find_one({"email": str(user.email)}))
+
+        if not verify_password(user.password, result["password"]):
+            raise HTTPException(status_code=400, detail="Incorrect email or password")
+
         acc = result["accessed_at"]
         length = len(acc)
 
@@ -163,10 +169,10 @@ async def user_login(user: User):
             "data": {
                 "id": result["id"],
                 "email": result["email"],
-                "status": result["status"],
                 "role": result["role"],
             },
-            "token": "token",
+            "access_token": create_access_token(user.email),
+            "refresh_token": create_refresh_token(user.email),
         }
         # return {"status": "success"}
     except:

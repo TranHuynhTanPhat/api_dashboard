@@ -4,6 +4,10 @@
     <div class="table-main">
       <div class="table-main-top">
         <div class="table-main-top-left">
+          <v-alert dense border="left" type="warning" :value="alert">
+            I'm a dense alert with the <strong>border</strong> prop and a
+            <strong>type</strong> of warning
+          </v-alert>
           <p class="h1" style="margin: 5px 0 15px 20px">List Users</p>
           <table>
             <thead>
@@ -127,6 +131,7 @@ export default {
       pageSize: 10,
       currentPage: 1,
       currentUser: "Undefined",
+      alert: false,
     };
   },
   components: {
@@ -134,10 +139,9 @@ export default {
   },
   mounted() {
     // localStorage.getItem("role") != 0
-
     if (
-      localStorage.getItem("id") === null ||
-      localStorage.getItem("token") === null
+      localStorage.getItem("id") == null ||
+      localStorage.getItem("access_token") == null
     ) {
       this.$router.push({ name: "Signin" });
     }
@@ -183,15 +187,17 @@ export default {
       });
     },
     async handleDelete(id) {
-      await axios
-        .delete(UPDATE_DELETE_USER + "/" + id)
-        .then((this.currentUser = "Undefined"))
-        .catch((ex) => console.log(ex));
-      await axios.get(GET_USER).then((res) => {
-        if (res.status == 200) {
-          this.listUsers = res.data.data;
-        }
-      });
+      this.alert = true;
+      console.log(id);
+      // await axios
+      //   .delete(UPDATE_DELETE_USER + "/" + id)
+      //   .then((this.currentUser = "Undefined"))
+      //   .catch((ex) => console.log(ex));
+      // await axios.get(GET_USER).then((res) => {
+      //   if (res.status == 200) {
+      //     this.listUsers = res.data.data;
+      //   }
+      // });
     },
   },
   computed: {

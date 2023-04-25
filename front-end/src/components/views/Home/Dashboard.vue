@@ -139,9 +139,10 @@ export default {
   },
   mounted() {
     if (
-      localStorage.getItem("id") === null ||
-      localStorage.getItem("token") === null
+      localStorage.getItem("id") == null ||
+      localStorage.getItem("access_token") == null
     ) {
+
       this.$router.push({ name: "Signin" });
     }
   },
@@ -153,10 +154,16 @@ export default {
     document.title = "Dashboard";
     this.$store.commit("isDashboard");
 
+    console.log(localStorage.getItem("access_token"))
+
     this.total_check_time.today = new Date().toLocaleString();
 
     await axios
-      .get(TODAY_USERS)
+      .get(TODAY_USERS,{
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('access_token')}`
+          }
+        })
       .then((res) => {
         if (res.status == 200) {
           this.today_user.count = res.data.todayUsers;
