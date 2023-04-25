@@ -1,4 +1,0 @@
-{
-    "python.formatting.provider": "black",
-    "vue.features.codeActions.enable": false
-}
