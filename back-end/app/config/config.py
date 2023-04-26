@@ -5,4 +5,6 @@ client = MongoClient("mongodb+srv://dbAPIDashboard:dbAPIDashboard@cluster0.5ilie
 conn = client.api_dashboard_application
 db=conn["api_dashboard"]
 
-
+SECRET_KEY = "adminhashtoken"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30

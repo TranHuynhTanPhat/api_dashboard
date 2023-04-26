@@ -1,13 +1,9 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 from app.models.user import User
-from app.config.db import db
+from app.config.config import db
 from app.schemas.user import userEntity, usersEntity
-from app.utils.utils import (
-    get_hashed_password,
-    verify_password,
-    create_access_token,
-    create_refresh_token,
-)
+from app.utils.utils import get_hashed_password, verify_password
+from app.utils.repo import JWTRepo, JWTBearer, JWTBearerAdmin
 from bson import ObjectId
 from datetime import datetime, date
 
@@ -20,7 +16,7 @@ async def main():
 
 
 # RETRIEVE ALL ACCOUNT
-@app_router.get("/users")
+@app_router.get("/users", dependencies=[Depends(JWTBearerAdmin())])
 async def find_all_users():
     result = usersEntity(db.find())
     listUsers = []
@@ -49,7 +45,7 @@ async def find_all_users():
 
 
 # RETRIEVE ACCOUNT BY ID
-@app_router.get("/user/{id}")
+@app_router.get("/user/{id}", dependencies=[Depends(JWTBearer())])
 async def find_user_by_id(id: str):
     result = userEntity(db.find_one({"_id": ObjectId(id)}))
     return {"status": "success", "data": result}
@@ -84,7 +80,7 @@ async def register(user: User):
 
 
 # UPDATE ACCOUNT BY ID
-@app_router.put("/user/{id}")
+@app_router.put("/user/{id}", dependencies=[Depends(JWTBearer())])
 async def update_user(id: str, user: User):
     try:
         # check existed email
@@ -129,7 +125,7 @@ async def update_user(id: str, user: User):
 
 
 # DELETE ACCOUNT BY ID
-@app_router.delete("/user/{id}")
+@app_router.delete("/user/{id}", dependencies=[Depends(JWTBearer())])
 async def delete_user(id: str):
     try:
         check = userEntity(db.find_one({"_id": ObjectId(id)}))
@@ -148,39 +144,38 @@ async def delete_user(id: str):
 # LOGIN USER
 @app_router.post("/user/login")
 async def user_login(user: User):
-    try:
-        print(user.password)
-        result = userEntity(db.find_one({"email": str(user.email.lower())}))
+    # try:
+    result = userEntity(db.find_one({"email": str(user.email.lower())}))
 
-        if not verify_password(user.password, result["password"]):
-            raise HTTPException(status_code=400, detail="Incorrect email or password")
+    if not verify_password(user.password, result["password"]):
+        raise HTTPException(status_code=400, detail="Incorrect email or password")
 
-        acc = result["accessed_at"]
-        length = len(acc)
+    acc = result["accessed_at"]
+    length = len(acc)
 
-        if length > 0:
-            if acc[length - 1].date() != date.today():
-                result["accessed_at"].append(datetime.now())
-                db.find_one_and_update(
-                    {"_id": ObjectId(result["id"])}, {"$set": dict(result)}
-                )
-
-        else:
+    if length > 0:
+        if acc[length - 1].date() != date.today():
             result["accessed_at"].append(datetime.now())
             db.find_one_and_update(
                 {"_id": ObjectId(result["id"])}, {"$set": dict(result)}
             )
-        return {
-            "data": {
-                "id": result["id"],
-                "email": result["email"],
-                "role": result["role"],
-            },
-            "access_token": create_access_token(result["email"]),
-            "refresh_token": create_refresh_token(result["email"]),
-        }
-        # return {"status": "success"}
-    except:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Login failed"
-        )
+    else:
+        result["accessed_at"].append(datetime.now())
+        db.find_one_and_update({"_id": ObjectId(result["id"])}, {"$set": dict(result)})
+
+    token = JWTRepo.generate_token({"email": result["email"], "role": result["role"]})
+    return {
+        "data": {
+            "id": result["id"],
+            "email": result["email"],
+            "role": result["role"],
+        },
+        "access_token": token,
+        "token_type": "Bearer",
+    }
+
+
+# except:
+#     raise HTTPException(
+#         status_code=status.HTTP_401_UNAUTHORIZED, detail="Login failed"
+#     )

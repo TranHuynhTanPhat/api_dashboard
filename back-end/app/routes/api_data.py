@@ -1,7 +1,10 @@
-from fastapi import APIRouter, HTTPException, status, File, UploadFile, Request
+from fastapi import APIRouter, HTTPException, status, File, UploadFile, Request, Depends
 from fastapi.responses import StreamingResponse
 
-from app.config.db import db
+from app.utils.utils import get_hashed_password, verify_password
+from app.utils.repo import JWTRepo, JWTBearer, JWTBearerAdmin
+
+from app.config.config import db
 from app.schemas.user import userEntity, usersEntity
 from app.main_data.getData import times, stateOk, inspection, data
 
@@ -23,12 +26,12 @@ for i in range(0, 7):
     stateFail[i] = times[i] - stateOk[i]
 
 
-@app_router.get("/chart-data")
+@app_router.get("/chart-data", dependencies=[Depends(JWTBearer())])
 async def chart_data():
     return {"count": times, "stateOk": stateOk, "stateFail": stateFail}
 
 
-@app_router.get("/today-users")
+@app_router.get("/today-users", dependencies=[Depends(JWTBearer())])
 async def today_users():
     allUsers = usersEntity(db.find())
     countUserToday = 0
@@ -59,7 +62,7 @@ async def today_users():
     }
 
 
-@app_router.get("/new-clients")
+@app_router.get("/new-clients", dependencies=[Depends(JWTBearer())])
 async def new_clients():
     newClientsThisQuarter = 0
     ClientsLastQuarter = 0
@@ -88,23 +91,23 @@ async def new_clients():
     }
 
 
-@app_router.get("/status-success")
+@app_router.get("/status-success", dependencies=[Depends(JWTBearer())])
 async def status_success():
     percent = round(100 * (sum(stateOk) / sum(times)), 2)
     return {"state_ok": (format(sum(stateOk), ",d")), "percent": percent}
 
 
-@app_router.get("/total-check-times")
+@app_router.get("/total-check-times", dependencies=[Depends(JWTBearer())])
 async def status_fail():
     return {"total_check": (format(sum(times), ",d"))}
 
 
-@app_router.get("/get-inspection")
+@app_router.get("/get-inspection", dependencies=[Depends(JWTBearer())])
 async def get_inspection():
     return {"data": inspection}
 
 
-@app_router.get("/get-inspection-detail")
+@app_router.get("/get-inspection-detail", dependencies=[Depends(JWTBearer())])
 async def get_inspection_detail(id: str):
     try:
         detail_predict = []
@@ -132,7 +135,7 @@ async def get_inspection_detail(id: str):
         raise HTTPException(status_code=500)
 
 
-@app_router.post("/upload-avatar")
+@app_router.post("/upload-avatar", dependencies=[Depends(JWTBearer())])
 async def upload_avatar(file: UploadFile, id: str):
     allowedFiles = {
         "image/jpeg",
@@ -163,7 +166,7 @@ async def upload_avatar(file: UploadFile, id: str):
     raise HTTPException(status_code=415, detail="Unsupported Media Type")
 
 
-@app_router.get("/download_api_data")
+@app_router.get("/download_api_data", dependencies=[Depends(JWTBearer())])
 async def download_api_data():
     output = io.BytesIO()
     writer = pd.ExcelWriter(output, engine="xlsxwriter")

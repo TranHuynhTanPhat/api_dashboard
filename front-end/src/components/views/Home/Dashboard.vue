@@ -154,8 +154,6 @@ export default {
     document.title = "Dashboard";
     this.$store.commit("isDashboard");
 
-    console.log(localStorage.getItem("access_token"))
-
     this.total_check_time.today = new Date().toLocaleString();
 
     await axios

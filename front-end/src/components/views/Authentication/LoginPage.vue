@@ -72,13 +72,10 @@ export default {
         .post(LOGIN, { email: this.email, password: this.password })
         .then((res) => {
           if (res.status == 200) {
-            // this.$store.commit('user', res.data.data)
             localStorage.setItem("id", res.data.data.id);
             localStorage.setItem("email", res.data.data.email);
             localStorage.setItem("role", res.data.data.role);
-
             localStorage.setItem("access_token", res.data.access_token);
-            localStorage.setItem("refresh_token", res.data.refresh_token);
 
             this.$router.push({ name: "Dashboard" });
           }
