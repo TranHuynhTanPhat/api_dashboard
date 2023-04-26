@@ -48,10 +48,16 @@ export default {
     },
     async handleDelete() {
       await axios
-        .delete(UPDATE_DELETE_USER + "/" + localStorage.getItem("id"))
+        .put(UPDATE_DELETE_USER + "/" + localStorage.getItem("id"), {
+          status: 0,
+        })
         .then((res) => {
           if (res.status == 200) {
             this.$router.push({ name: "Signin" });
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("id");
+            localStorage.removeItem("email");
+            localStorage.removeItem("role");
           }
         })
         .catch((ex) => {

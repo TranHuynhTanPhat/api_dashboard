@@ -8,6 +8,9 @@ from fastapi import Depends, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi import Request, HTTPException
 
+from app.config.config import db
+from app.schemas.user import userEntity, usersEntity
+
 
 class JWTRepo:
     def generate_token(data: dict, expires_delta: Optional[timedelta] = None):
@@ -49,7 +52,8 @@ class JWTBearer(HTTPBearer):
                 )
             return credentials.credentials
         else:
-            raise HTTPException(status=403, detail="Invalid authorization code.")
+            raise HTTPException(
+                status=403, detail="Invalid authorization code.")
 
     def verfity_jwt(Self, jwttoken: str):
         credentials_exception = HTTPException(
@@ -60,7 +64,11 @@ class JWTBearer(HTTPBearer):
         isTokenValid: bool = False
         try:
             payload = jwt.decode(jwttoken, SECRET_KEY, algorithms=[ALGORITHM])
+            user = userEntity(db.find_one({"email": payload.get("email")}))
         except JWTError:
+            raise credentials_exception
+
+        if user["status"] == 0:
             raise credentials_exception
 
         # if payload:
@@ -88,7 +96,8 @@ class JWTBearerAdmin(HTTPBearer):
                 )
             return credentials.credentials
         else:
-            raise HTTPException(status=403, detail="Invalid authorization code.")
+            raise HTTPException(
+                status=403, detail="Invalid authorization code.")
 
     def verfity_jwt(Self, jwttoken: str):
         credentials_exception = HTTPException(
@@ -99,11 +108,14 @@ class JWTBearerAdmin(HTTPBearer):
         isTokenValid: bool = False
         try:
             payload = jwt.decode(jwttoken, SECRET_KEY, algorithms=[ALGORITHM])
-            if payload.get("role") != 0:
-                raise credentials_exception
+            user = userEntity(db.find_one({"email": payload.get("email")}))
         except JWTError:
             raise credentials_exception
 
+        if payload.get("role") != 0:
+            raise credentials_exception
+        if user["status"] == 0:
+            raise credentials_exception
         # if payload:
         #     isTokenValid = True
         return isTokenValid

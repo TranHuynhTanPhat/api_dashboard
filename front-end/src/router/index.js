@@ -61,20 +61,9 @@ const routes = [
         path: 'register',
         name: 'Signup',
         component: () => import('../components/views/Authentication/RegisterPage.vue')
-      },
-      {
-        path: 'forgotpassword',
-        name: 'ForgotPassword',
-        component: () => import('../components/views/Authentication/ForgotPassword.vue')
-      },
-      {
-        path: 'verify',
-        name: 'Verify',
-        component: () => import('../components/views/Authentication/VerifyPage.vue')
       }
-
     ]
-  }, 
+  },
   { path: '*', component: () => import('../components/views/errors/404.vue') },
 ]
 

@@ -27,7 +27,8 @@ async def find_all_users():
             length = len(r["accessed_at"])
             dtAcc = ["NaN", "NaN"]
             if length > 0:
-                time = datetime.fromisoformat(str(r["accessed_at"][length - 1]))
+                time = datetime.fromisoformat(
+                    str(r["accessed_at"][length - 1]))
                 dtAcc = time.strftime("%Y/%m/%d %H:%M:%S").split(" ")
             time = datetime.fromisoformat(str(r["created_at"]))
             dtCre = time.strftime("%Y/%m/%d %H:%M:%S").split(" ")
@@ -145,42 +146,42 @@ async def delete_user(id: str):
 # LOGIN USER
 @app_router.post("/user/login")
 async def user_login(user: User):
-    try:
-        result = userEntity(db.find_one({"email": str(user.email.lower())}))
+    result = userEntity(db.find_one({"email": str(user.email.lower())}))
 
-        if not verify_password(user.password, result["password"]):
-            raise HTTPException(status_code=400, detail="Incorrect email or password")
+    if not verify_password(user.password, result["password"]):
+        raise HTTPException(
+            status_code=401, detail="Incorrect email or password")
 
-        acc = result["accessed_at"]
-        length = len(acc)
+    acc = result["accessed_at"]
+    length = len(acc)
 
-        if length > 0:
-            if acc[length - 1].date() != date.today():
-                result["accessed_at"].append(datetime.now())
-                db.find_one_and_update(
-                    {"_id": ObjectId(result["id"])}, {"$set": dict(result)}
-                )
-        else:
+    if length > 0:
+        if acc[length - 1].date() != date.today():
             result["accessed_at"].append(datetime.now())
             db.find_one_and_update(
                 {"_id": ObjectId(result["id"])}, {"$set": dict(result)}
             )
+    else:
+        result["accessed_at"].append(datetime.now())
+        db.find_one_and_update(
+            {"_id": ObjectId(result["id"])}, {"$set": dict(result)}
+        )
 
-        if result["status"] == 1:
-            token = JWTRepo.generate_token(
-                {"email": result["email"], "role": result["role"]}
-            )
-            return {
-                "data": {
-                    "id": result["id"],
-                    "email": result["email"],
-                    "role": result["role"],
-                },
-                "access_token": token,
-                "token_type": "Bearer",
-            }
-        else:
-            raise HTTPException(status_code=401, detail="Not verify")
+    if result["status"] == 1:
+        print(user.password)
+        token = JWTRepo.generate_token(
+            {"email": result["email"], "role": result["role"]}
+        )
+        return {
+            "data": {
+                "id": result["id"],
+                "email": result["email"],
+                "role": result["role"],
+            },
+            "access_token": token,
+            "token_type": "Bearer",
+        }
+    else:
+        raise HTTPException(
+            status_code=404, detail="Account's been deleted")
 
-    except:
-        raise HTTPException(status_code=400, detail="Login failed")

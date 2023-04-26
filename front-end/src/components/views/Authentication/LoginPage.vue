@@ -2,7 +2,9 @@
   <!-- <div class="bg-btn-login"><div class="letter-btn-login">{{ msgLogin }}</div></div> -->
   <div>
     <div class="navcontain">
-      <div class="header-name-page">{{ msgLogin }}</div>
+      <div class="header-name-page" @click="handleHome" style="cursor: pointer">
+        {{ msgLogin }}
+      </div>
     </div>
     <div class="contain">
       <form @submit.prevent="handlerSubmit">
@@ -26,9 +28,12 @@
         <button>Sign in</button>
         <div class="text-contain">
           <div class="forgotpassword">
-            <router-link to="/auth/forgotpassword"
-              >Forgot password?</router-link
+            <div
+              @click="handleForgotPW"
+              style="font-style: italic; cursor: pointer;"
             >
+              Forgot password?
+            </div>
           </div>
           <div class="donthavaaccount">
             Don't have account?
@@ -86,14 +91,22 @@ export default {
         })
         .catch((ex) => {
           console.log(ex);
-          if (ex.response.status == 400) {
+          if (ex.response.status == 401) {
             document.getElementById("messError").innerHTML =
               "Email or password is invalid!";
           }
-          if (ex.response.status == 401) {
-            console.log("verify")
+          if (ex.response.status == 404) {
+            document.getElementById("messError").innerHTML =
+              "Account's been deleted. Contact us to restore!";
           }
         });
+    },
+    handleForgotPW() {
+      console.log("a");
+      alert("Contact us to reset password");
+    },
+    handleHome() {
+      this.$router.push({ name: "Introduction" });
     },
   },
   created() {

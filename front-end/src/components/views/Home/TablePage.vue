@@ -233,6 +233,7 @@ export default {
       } else {
         this.currentUser = item;
       }
+      document.getElementById("inputStatus").value = "";
     },
     async handleUpdate() {
       var ipEmail = document.getElementById("inputEmail").value;
