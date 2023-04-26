@@ -4,7 +4,24 @@
     <div class="statistic-main">
       <div class="statistic-main-top">
         <div class="statistic-main-top-left">
-          <p class="h1" style="margin: 5px 0 15px 20px">Inspection</p>
+          <div
+            class="h1"
+            style="padding: 5px 0px 15px 20px; width: fit-content; float: left"
+          >
+            <font-awesome-icon
+              icon="fa-solid fa-file-excel"
+              style="color: #026600"
+              size="2xl"
+              class="btn-export"
+              @click="handleExportAPI"
+            />
+            Inspection
+          </div>
+          <v-progress-linear
+            indeterminate
+            color="#026600"
+            v-if="this.loading"
+          ></v-progress-linear>
           <table>
             <thead>
               <th style="padding-left: 20px">ID</th>
@@ -83,7 +100,23 @@
           class="statistic-main-bottom-content"
           v-if="this.$store.state.chartDashboard.angleId != null"
         >
-          <p class="h1" style="margin: 5px 0 15px 20px">{{ this.currentId }}</p>
+          <download-excel
+            class="btn btn-default"
+            :data="listAllDetails"
+            :fields="json_fields"
+            :worksheet="currentId"
+            :name="fileNameID"
+          >
+            <div class="h1" style="margin: 5px 0 15px 20px; width: fit-content">
+              <font-awesome-icon
+                icon="fa-solid fa-file-excel"
+                style="color: #026600"
+                size="2xl"
+                class="btn-export"
+              />
+              {{ this.currentId }}
+            </div>
+          </download-excel>
           <table>
             <thead>
               <th style="padding-left: 20px">Date</th>
@@ -157,6 +190,7 @@ import axios from "axios";
 import { GET_INSPECTION, GET_INSPECTION_DETAIL } from "@/axios";
 import Navbar from "../../AppNav.vue";
 import DoughnutChart from "./charts/DoughnutChart.vue";
+import { EXPORT_EXCEL_API } from "../../../axios";
 
 export default {
   name: "StatisticPage",
@@ -172,6 +206,23 @@ export default {
       currentPagePa: 1,
       currentPageCh: 1,
       currentId: "Undefined",
+      loading: false,
+      json_fields: {
+        Date: "date",
+        Time: "time",
+        Angle_id: "angle_id",
+        Status: "status",
+        Predict_result: "predict_result",
+      },
+      json_meta: [
+        [
+          {
+            key: "charset",
+            value: "utf-8",
+          },
+        ],
+      ],
+      fileNameID: "Undefined",
     };
   },
   mounted() {
@@ -179,7 +230,6 @@ export default {
       localStorage.getItem("id") == null ||
       localStorage.getItem("access_token") == null
     ) {
-
       this.$router.push({ name: "Signin" });
     }
   },
@@ -218,9 +268,41 @@ export default {
             this.$store.dispatch("angleId", res.data.angle_id);
             this.listAllDetails = res.data.all_details;
             this.currentId = id;
+            this.fileNameID = id + ".xls";
           }
         })
         .catch((ex) => console.log(ex));
+    },
+    async handleExportAPI() {
+      this.loading = true;
+      await axios
+        .get(EXPORT_EXCEL_API, {
+          responseType: "blob",
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            // Let's create a link in the document that we'll
+            // programmatically 'click'.
+            const link = document.createElement("a");
+
+            // Tell the browser to associate the response data to
+            // the URL of the link we created above.
+            link.href = window.URL.createObjectURL(new Blob([res.data]));
+
+            // Tell the browser to download, not render, the file.
+            link.setAttribute("download", "api_data.xlsx");
+
+            // Place the link in the DOM.
+            document.body.appendChild(link);
+
+            // Make the magic happen!
+            link.click();
+            this.loading = false;
+          }
+        })
+        .catch((ex) => {
+          console.log(ex);
+        });
     },
   },
   computed: {

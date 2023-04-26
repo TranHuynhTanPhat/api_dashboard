@@ -1,10 +1,18 @@
 from fastapi import APIRouter, HTTPException, status, File, UploadFile, Request
+from fastapi.responses import StreamingResponse
+
 from app.config.db import db
 from app.schemas.user import userEntity, usersEntity
-from bson import ObjectId
 from app.main_data.getData import times, stateOk, inspection, data
+
 from datetime import date, datetime
+
+from bson import ObjectId
 import base64
+
+import pandas as pd
+import io
+from UliPlot.XLSX import auto_adjust_xlsx_column_width
 
 
 app_router = APIRouter()
@@ -153,3 +161,22 @@ async def upload_avatar(file: UploadFile, id: str):
 
         return {"message": f"Successfuly uploaded {file.filename}"}
     raise HTTPException(status_code=415, detail="Unsupported Media Type")
+
+
+@app_router.get("/download_api_data")
+async def download_api_data():
+    output = io.BytesIO()
+    writer = pd.ExcelWriter(output, engine="xlsxwriter")
+    for id in data:
+        df = pd.DataFrame(data[id])
+        name = id.replace("/", "-")
+        df.to_excel(writer, sheet_name=name)
+        auto_adjust_xlsx_column_width(df, writer, sheet_name=name, margin=0)
+    writer.close()
+    xlsx_data = output.getvalue()
+
+    return StreamingResponse(
+        io.BytesIO(xlsx_data),
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": "attachment; filename=api_data.xlsx"},
+    )

@@ -21,6 +21,8 @@
           placeholder="Enter Password"
           required
         />
+        <span id="messError"></span>
+
         <button>Sign in</button>
         <div class="text-contain">
           <div class="forgotpassword">
@@ -78,12 +80,13 @@ export default {
             localStorage.setItem("access_token", res.data.access_token);
             localStorage.setItem("refresh_token", res.data.refresh_token);
 
-
-            this.$router.push({name:"Dashboard"});
+            this.$router.push({ name: "Dashboard" });
           }
         })
         .catch((ex) => {
           console.log(ex);
+          document.getElementById("messError").innerHTML =
+            "Email or password is invalid!";
         });
     },
   },

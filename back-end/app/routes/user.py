@@ -2,7 +2,12 @@ from fastapi import APIRouter, HTTPException, status
 from app.models.user import User
 from app.config.db import db
 from app.schemas.user import userEntity, usersEntity
-from app.utils.utils import get_hashed_password, verify_password, create_access_token, create_refresh_token
+from app.utils.utils import (
+    get_hashed_password,
+    verify_password,
+    create_access_token,
+    create_refresh_token,
+)
 from bson import ObjectId
 from datetime import datetime, date
 
@@ -53,29 +58,28 @@ async def find_user_by_id(id: str):
 # REGISTER ACCOUNT
 @app_router.post("/user/register")
 async def register(user: User):
-    if user.email == "" or user.password == "":
-        raise HTTPException(status_code=400, detail="Can't create account")
     # check existed email
-    check = usersEntity(db.find({"email": str(user.email)}))
+    check = usersEntity(db.find({"email": str(user.email.lower())}))
 
     if len(check) != 0:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail=f"Can't create account with email: {user.email}",
+            detail=f"Can't create account with email: {user.email.lower()}",
         )
     elif int(user.role) == 0 or int(user.role) > 2 or int(user.role) < 0:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Can't create account"
         )
-    elif user.email == "" or user.password == "":
+    elif user.email.lower() == "" or user.password == "":
         raise HTTPException(status_code=406, detail="Not Acceptable")
     else:
         user.password = get_hashed_password(user.password)
         user.created_at = datetime.now()
+        user.email = user.email.lower()
         _id = db.insert_one(dict(user))
         result = userEntity(db.find_one({"_id": _id.inserted_id}))
         return {
-            "message": "Successfully created user: " + user.email,
+            "message": "Successfully created user: " + result["email"],
         }
 
 
@@ -90,12 +94,12 @@ async def update_user(id: str, user: User):
         # if role = 0 or out range[0;2] return status 401
         # else return status 200
 
-        if findUser["email"] != user.email:
-            check = usersEntity(db.find({"email": user.email}))
+        if findUser["email"] != user.email.lower():
+            check = usersEntity(db.find({"email": user.email.lower()}))
             if len(check) != 0:
                 raise HTTPException(
                     status_code=status.HTTP_409_CONFLICT,
-                    detail=f"Can't update email: {user.email}",
+                    detail=f"Can't update email: {user.email.lower()}",
                 )
             elif (
                 int(user.role) == 0
@@ -146,7 +150,7 @@ async def delete_user(id: str):
 async def user_login(user: User):
     try:
         print(user.password)
-        result = userEntity(db.find_one({"email": str(user.email)}))
+        result = userEntity(db.find_one({"email": str(user.email.lower())}))
 
         if not verify_password(user.password, result["password"]):
             raise HTTPException(status_code=400, detail="Incorrect email or password")
@@ -172,8 +176,8 @@ async def user_login(user: User):
                 "email": result["email"],
                 "role": result["role"],
             },
-            "access_token": create_access_token(user.email),
-            "refresh_token": create_refresh_token(user.email),
+            "access_token": create_access_token(result["email"]),
+            "refresh_token": create_refresh_token(result["email"]),
         }
         # return {"status": "success"}
     except:

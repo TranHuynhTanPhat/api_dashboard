@@ -15,6 +15,7 @@
   width: 100%;
 
   margin-top: 120px;
+
   padding: 0px 50px;
 
   display: flex;
@@ -147,6 +148,7 @@
 }
 
 .footer-table {
+  width: 100%;
   display: flex;
   flex-flow: row;
   justify-content: center;
@@ -175,6 +177,10 @@
   font-size: 24px;
   font-weight: 800;
   color: #3d5554;
+}
+
+.btn-export:hover {
+  cursor: pointer;
 }
 
 .note {

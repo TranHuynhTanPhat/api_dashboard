@@ -4,8 +4,24 @@
     <div class="table-main">
       <div class="table-main-top">
         <div class="table-main-top-left">
-          <AlertDialog :show="this.show" @close="close"  @load-user="loadUser"/>
-          <p class="h1" style="margin: 5px 0 15px 20px">List Users</p>
+          <AlertDialog :show="this.show" @close="close" @load-user="loadUser" />
+          <download-excel
+            class="btn btn-default"
+            :data="listUsers"
+            :fields="json_fields"
+            worksheet="Users"
+            name="users.xls"
+          >
+            <div class="h1" style="margin: 5px 0 15px 20px; width: fit-content">
+              <font-awesome-icon
+                icon="fa-solid fa-file-excel"
+                style="color: #026600"
+                size="2xl"
+                class="btn-export"
+              />
+              List User
+            </div>
+          </download-excel>
           <table>
             <thead>
               <th style="padding-left: 20px">ID</th>
@@ -156,6 +172,31 @@ export default {
       currentPage: 1,
       currentUser: "Undefined",
       show: false,
+      json_fields: {
+        ID: "id",
+        Email: "email",
+        Status: "status",
+        Accessed_at: {
+          field: "accessed_at",
+          callback: (value) => {
+            if (value.date != "NaN") return value.date + " at " + value.time;
+          },
+        },
+        Created_at: {
+          field: "created_at",
+          callback: (value) => {
+            return value.date + " at " + value.time;
+          },
+        },
+      },
+      json_meta: [
+        [
+          {
+            key: "charset",
+            value: "utf-8",
+          },
+        ],
+      ],
     };
   },
   components: {
