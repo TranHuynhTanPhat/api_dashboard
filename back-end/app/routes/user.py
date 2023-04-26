@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, status, Depends
+
 from app.models.user import User
 from app.config.config import db
 from app.schemas.user import userEntity, usersEntity
@@ -144,38 +145,42 @@ async def delete_user(id: str):
 # LOGIN USER
 @app_router.post("/user/login")
 async def user_login(user: User):
-    # try:
-    result = userEntity(db.find_one({"email": str(user.email.lower())}))
+    try:
+        result = userEntity(db.find_one({"email": str(user.email.lower())}))
 
-    if not verify_password(user.password, result["password"]):
-        raise HTTPException(status_code=400, detail="Incorrect email or password")
+        if not verify_password(user.password, result["password"]):
+            raise HTTPException(status_code=400, detail="Incorrect email or password")
 
-    acc = result["accessed_at"]
-    length = len(acc)
+        acc = result["accessed_at"]
+        length = len(acc)
 
-    if length > 0:
-        if acc[length - 1].date() != date.today():
+        if length > 0:
+            if acc[length - 1].date() != date.today():
+                result["accessed_at"].append(datetime.now())
+                db.find_one_and_update(
+                    {"_id": ObjectId(result["id"])}, {"$set": dict(result)}
+                )
+        else:
             result["accessed_at"].append(datetime.now())
             db.find_one_and_update(
                 {"_id": ObjectId(result["id"])}, {"$set": dict(result)}
             )
-    else:
-        result["accessed_at"].append(datetime.now())
-        db.find_one_and_update({"_id": ObjectId(result["id"])}, {"$set": dict(result)})
 
-    token = JWTRepo.generate_token({"email": result["email"], "role": result["role"]})
-    return {
-        "data": {
-            "id": result["id"],
-            "email": result["email"],
-            "role": result["role"],
-        },
-        "access_token": token,
-        "token_type": "Bearer",
-    }
+        if result["status"] == 1:
+            token = JWTRepo.generate_token(
+                {"email": result["email"], "role": result["role"]}
+            )
+            return {
+                "data": {
+                    "id": result["id"],
+                    "email": result["email"],
+                    "role": result["role"],
+                },
+                "access_token": token,
+                "token_type": "Bearer",
+            }
+        else:
+            raise HTTPException(status_code=401, detail="Not verify")
 
-
-# except:
-#     raise HTTPException(
-#         status_code=status.HTTP_401_UNAUTHORIZED, detail="Login failed"
-#     )
+    except:
+        raise HTTPException(status_code=400, detail="Login failed")

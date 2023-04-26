@@ -17,7 +17,13 @@
               placeholder="Enter password"
             />
             <label for="status" class="label">Status:</label>
-            <input type="number" v-model="status" :placeholder="this.status" />
+            <input
+              type="number"
+              v-model="status"
+              :placeholder="this.status"
+              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); if(this.value!=1 && this.value!=0) this.value=''"
+              maxlength="1"
+            />
             <span id="messError"></span>
           </div>
 
@@ -190,5 +196,17 @@ input:hover {
 .modal-leave-to .modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 </style>

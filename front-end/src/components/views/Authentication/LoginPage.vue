@@ -77,15 +77,22 @@ export default {
             localStorage.setItem("role", res.data.data.role);
             localStorage.setItem("access_token", res.data.access_token);
 
-            axios.defaults.headers.common['Authorization']=`Bearer ${res.data.access_token}`
+            axios.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${res.data.access_token}`;
 
             this.$router.push({ name: "Dashboard" });
           }
         })
         .catch((ex) => {
           console.log(ex);
-          document.getElementById("messError").innerHTML =
-            "Email or password is invalid!";
+          if (ex.response.status == 400) {
+            document.getElementById("messError").innerHTML =
+              "Email or password is invalid!";
+          }
+          if (ex.response.status == 401) {
+            console.log("verify")
+          }
         });
     },
   },

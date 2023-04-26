@@ -93,8 +93,8 @@
   border-width: 0px;
 }
 
-.form-update button{
-  padding: 10px 15px; 
+.form-update button {
+  padding: 10px 15px;
 
   height: auto;
   width: auto;
@@ -104,7 +104,7 @@
   border-radius: 10px;
 }
 
-.form-update button:hover{
+.form-update button:hover {
   background-color: rgba(255, 77, 77, 0.365);
 }
 
@@ -185,4 +185,16 @@
 
   text-transform: uppercase;
   text-align: center;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }

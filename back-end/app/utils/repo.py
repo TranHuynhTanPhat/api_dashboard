@@ -60,7 +60,6 @@ class JWTBearer(HTTPBearer):
         isTokenValid: bool = False
         try:
             payload = jwt.decode(jwttoken, SECRET_KEY, algorithms=[ALGORITHM])
-            print(payload)
         except JWTError:
             raise credentials_exception
 
@@ -100,7 +99,6 @@ class JWTBearerAdmin(HTTPBearer):
         isTokenValid: bool = False
         try:
             payload = jwt.decode(jwttoken, SECRET_KEY, algorithms=[ALGORITHM])
-            print(payload)
             if payload.get("role") != 0:
                 raise credentials_exception
         except JWTError:

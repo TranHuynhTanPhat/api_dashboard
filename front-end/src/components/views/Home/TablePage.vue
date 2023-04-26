@@ -143,6 +143,8 @@
                 :placeholder="this.currentUser['status']"
                 name="status"
                 id="inputStatus"
+                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength); if(this.value!=1 && this.value!=0) this.value=''"
+                maxlength="1"
               />
             </div>
             <button @click.prevent="handleUpdate">Update</button>

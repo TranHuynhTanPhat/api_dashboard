@@ -2,21 +2,16 @@
   <!-- <div class="bg-btn-login"><div class="letter-btn-login">{{ msgLogin }}</div></div> -->
   <div>
     <div class="navcontain">
-      <div @click="handleLogin" class="header-name-page" style="cursor: pointer;">
-        {{ msgForgotPassword }}
+      <div
+        @click="handleLogin"
+        class="header-name-page"
+        style="cursor: pointer"
+      >
+        {{ msgVerify }}
       </div>
     </div>
     <div class="contain">
-      <form @submit.prevent="handlerVerify" v-if="activeOTP == 'send'">
-        <input
-          type="email"
-          v-model="email"
-          placeholder="Enter Email"
-          required
-        />
-        <button class="login">Send OTP</button>
-      </form>
-      <form @submit.prevent="handlerVerify" v-if="activeOTP == 'verify'">
+      <form @submit.prevent="handlerVerify">
         <input
           v-model="OTP"
           oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
@@ -27,14 +22,10 @@
         />
         <button class="login">Verify</button>
       </form>
-      <form @submit.prevent="handlerVerify" v-if="activeOTP == 'change'">
-        <input v-model="password" type="text" required />
-        <button class="login">Change Password</button>
-      </form>
     </div>
   </div>
 </template>
-<script>
+  <script>
 // import axios from "axios"
 
 export default {
@@ -42,11 +33,8 @@ export default {
 
   data() {
     return {
-      msgForgotPassword: "Forgot password",
-      email: "",
+      msgVerify: "Verify",
       OTP: "",
-      password: "",
-      activeOTP: "send",
     };
   },
   methods: {
@@ -71,7 +59,7 @@ export default {
   },
 };
 </script>
-<style>
+  <style>
 @import url("../../../assets/css/nav-style.css");
 @import "../../../assets/css/form-style.css";
 
@@ -83,4 +71,5 @@ form .otp {
   gap: 20px;
 }
 </style>
-
+  
+  

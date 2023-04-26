@@ -67,6 +67,11 @@ const routes = [
         name: 'ForgotPassword',
         component: () => import('../components/views/Authentication/ForgotPassword.vue')
       },
+      {
+        path: 'verify',
+        name: 'Verify',
+        component: () => import('../components/views/Authentication/VerifyPage.vue')
+      }
 
     ]
   }, 
