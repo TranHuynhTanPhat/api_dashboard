@@ -5,9 +5,14 @@
 ## Project setup
 
 ### Create virtual environment
+#### Macos
 
 ```
 python3 -m venv venv
+```
+#### Windows
+```
+py -m venv env
 ```
 
 ### Run virtual environment
@@ -21,7 +26,7 @@ source venv/bin/activate
 #### Windows
 
 ```
-venv/Scripts/activate
+env/Scripts/activate
 ```
 
 ### Install libraries (in zsh terminal)
