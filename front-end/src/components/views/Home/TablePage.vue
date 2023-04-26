@@ -233,7 +233,7 @@ export default {
       } else {
         this.currentUser = item;
       }
-      document.getElementById("inputStatus").value = "";
+      // document.getElementById("inputStatus").value = "";
     },
     async handleUpdate() {
       var ipEmail = document.getElementById("inputEmail").value;
@@ -249,7 +249,12 @@ export default {
       await axios.put(UPDATE_DELETE_USER + "/" + this.currentUser["id"], {
         email: this.currentUser["email"],
         status: this.currentUser["status"],
-      });
+      }).then((res) => {
+        if (res.status == 200) {
+          document.getElementById("inputStatus").value = "";
+          this.currentUser = "Undefined"
+        }
+      })
     },
     async handleDelete(id) {
       await axios

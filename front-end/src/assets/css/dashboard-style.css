@@ -31,17 +31,13 @@
     border-color: rgba(0, 0, 0, 0.15);
     border-width: 0.5px; */
 
-  display: flex;
-  flex-flow: row;
-  justify-content: flex-start;
-  align-items: flex-start;
 }
 
 .contain-top-child-left {
   float: left;
 
   height: auto;
-  width: 240px;
+  width: fit-content;
 
   display: flex;
   flex-flow: column;
