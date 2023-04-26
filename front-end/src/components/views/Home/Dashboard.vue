@@ -81,7 +81,6 @@
     </div>
     <div class="dashboard-contain-main">
       <div class="contain-main-child-left">
-        <!-- <LineChart :data="data" :options="options" /> -->
         <p class="h1">Check times by angle id</p>
         <br />
         <BarChart />
