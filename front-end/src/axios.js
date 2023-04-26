@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 axios.defaults.baseURL = 'http://0.0.0.0:8000/'
+axios.defaults.headers.common = { 'Authorization': `Bearer ${localStorage.getItem("access_token")}` }
 
 
 export const REGISTER = 'user/register'

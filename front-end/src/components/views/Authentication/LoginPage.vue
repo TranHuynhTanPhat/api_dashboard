@@ -77,6 +77,8 @@ export default {
             localStorage.setItem("role", res.data.data.role);
             localStorage.setItem("access_token", res.data.access_token);
 
+            axios.defaults.headers.common['Authorization']=`Bearer ${res.data.access_token}`
+
             this.$router.push({ name: "Dashboard" });
           }
         })
@@ -89,7 +91,6 @@ export default {
   },
   created() {
     localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
 
     localStorage.removeItem("id");
     localStorage.removeItem("email");
