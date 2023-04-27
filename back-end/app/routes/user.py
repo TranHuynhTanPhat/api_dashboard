@@ -111,10 +111,13 @@ async def update_user(id: str, user: User):
                 )
         if user.password == "":
             user.password = findUser["password"]
+        else:
+            user.password = get_hashed_password(user.password)
         if user.email == "":
             user.email = findUser["email"]
         if user.status == 0:
             user.status == findUser["status"]
+
         user.accessed_at = findUser["accessed_at"]
         user.created_at = findUser["created_at"]
         user.image = findUser["image"]
@@ -184,4 +187,3 @@ async def user_login(user: User):
     else:
         raise HTTPException(
             status_code=404, detail="Account's been deleted")
-
