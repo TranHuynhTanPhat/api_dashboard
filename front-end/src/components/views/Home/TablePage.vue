@@ -11,6 +11,7 @@
             :fields="json_fields"
             worksheet="Users"
             name="users.xls"
+            style="width: fit-content; float: left"
           >
             <div class="h1" style="margin: 5px 0 15px 20px; width: fit-content">
               <font-awesome-icon
@@ -22,10 +23,28 @@
               List User
             </div>
           </download-excel>
+          <div
+            class="form-input"
+            style="width: 250px; float: right; padding: 5px 50px 15px 0"
+          >
+            <input type="text" placeholder="Enter key" v-model="keySearch" />
+          </div>
           <table>
             <thead>
-              <th style="padding-left: 20px">ID</th>
-              <th>Email</th>
+              <th @click="sort('id')" style="padding-left: 20px">
+                <font-awesome-icon
+                  icon="fa-solid fa-sort"
+                  style="color: #3d555426"
+                />
+                ID
+              </th>
+              <th @click="sort('email')">
+                <font-awesome-icon
+                  icon="fa-solid fa-sort"
+                  style="color: #3d555426"
+                />
+                Email
+              </th>
               <th>Status</th>
               <th>Role</th>
               <th>Accessed_at</th>
@@ -174,6 +193,9 @@ export default {
       currentPage: 1,
       currentUser: "Undefined",
       show: false,
+      sortBy: "id",
+      sortOrder: 1,
+      keySearch: "",
       json_fields: {
         ID: "id",
         Email: "email",
@@ -227,6 +249,13 @@ export default {
     prevPage() {
       if (this.currentPage > 1) this.currentPage--;
     },
+    sort(sortBy) {
+      if (this.sortBy === sortBy) {
+        this.sortOrder = -this.sortOrder;
+      } else {
+        this.sortBy = sortBy;
+      }
+    },
     handleClick(item) {
       if (item == this.currentUser) {
         this.currentUser = "Undefined";
@@ -246,15 +275,17 @@ export default {
         this.currentUser["status"] = ipStatus;
       }
 
-      await axios.put(UPDATE_DELETE_USER + "/" + this.currentUser["id"], {
-        email: this.currentUser["email"],
-        status: this.currentUser["status"],
-      }).then((res) => {
-        if (res.status == 200) {
-          document.getElementById("inputStatus").value = "";
-          this.currentUser = "Undefined"
-        }
-      })
+      await axios
+        .put(UPDATE_DELETE_USER + "/" + this.currentUser["id"], {
+          email: this.currentUser["email"],
+          status: this.currentUser["status"],
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            document.getElementById("inputStatus").value = "";
+            this.currentUser = "Undefined";
+          }
+        });
     },
     async handleDelete(id) {
       await axios
@@ -283,11 +314,33 @@ export default {
   },
   computed: {
     sortListUsers() {
-      return this.listUsers.filter((row, index) => {
-        let start = (this.currentPage - 1) * this.pageSize;
-        let end = this.currentPage * this.pageSize;
-        if (index >= start && index < end) return true;
-      });
+      return [...this.listUsers]
+        .sort((a, b) => {
+          if (a[this.sortBy] >= b[this.sortBy]) {
+            return this.sortOrder;
+          }
+          return -this.sortOrder;
+        })
+        .filter((row) => {
+          if (this.keySearch != "") {
+            return (
+              row.id.includes(this.keySearch) ||
+              row.email.includes(this.keySearch)
+            );
+          }
+          return true;
+        })
+        .filter((row, index) => {
+          let start = (this.currentPage - 1) * this.pageSize;
+          let end = this.currentPage * this.pageSize;
+
+          if (index >= start && index < end) return true;
+        });
+    },
+  },
+  watch: {
+    keySearch() {
+      this.sortListUsers;
     },
   },
 };

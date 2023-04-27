@@ -17,6 +17,12 @@
             />
             Inspection
           </div>
+          <div
+            class="form-input"
+            style="width: 250px; float: right; padding: 5px 50px 15px 0"
+          >
+            <input type="text" placeholder="Enter key" v-model="keySearch" />
+          </div>
           <v-progress-linear
             indeterminate
             color="#026600"
@@ -24,14 +30,20 @@
           ></v-progress-linear>
           <table>
             <thead>
-              <th style="padding-left: 20px">ID</th>
+              <th @click="sortPa('id')" style="padding-left: 20px">
+                <font-awesome-icon
+                  icon="fa-solid fa-sort"
+                  style="color: #3d555426"
+                />
+                ID
+              </th>
               <th>Status OK</th>
               <th>From</th>
               <th>To</th>
             </thead>
             <tbody>
               <tr
-                v-for="item in sortListData"
+                v-for="item in sortListPa"
                 :key="item.id"
                 @click="getDetail(item.id)"
               >
@@ -121,12 +133,18 @@
             <thead>
               <th style="padding-left: 20px">Date</th>
               <th>Time</th>
-              <th>Angle_id</th>
+              <th @click="sortCh('angle_id')">
+                <font-awesome-icon
+                  icon="fa-solid fa-sort"
+                  style="color: #3d555426"
+                />
+                Angle_id
+              </th>
               <th>Status</th>
               <th>Predict_result</th>
             </thead>
             <tbody>
-              <tr v-for="item in sortListAllDetails" :key="item.id">
+              <tr v-for="item in sortListCh" :key="item.id">
                 <td>
                   <p class="content-start">{{ item["date"] }}</p>
                 </td>
@@ -205,6 +223,11 @@ export default {
       pageSize: 10,
       currentPagePa: 1,
       currentPageCh: 1,
+      sortByPa: "id",
+      sortOrderPa: 1,
+      sortByCh: "id",
+      sortOrderCh: 1,
+      keySearch: "",
       currentId: "Undefined",
       loading: false,
       json_fields: {
@@ -259,7 +282,20 @@ export default {
     prevPageCh() {
       if (this.currentPageCh > 1) this.currentPageCh--;
     },
-
+    sortPa(sortByPa) {
+      if (this.sortByPa === sortByPa) {
+        this.sortOrderPa = -this.sortOrderPa;
+      } else {
+        this.sortByPa = sortByPa;
+      }
+    },
+    sortCh(sortByCh) {
+      if (this.sortByCh === sortByCh) {
+        this.sortOrderCh = -this.sortOrderCh;
+      } else {
+        this.sortByCh = sortByCh;
+      }
+    },
     async getDetail(id) {
       await axios
         .get(GET_INSPECTION_DETAIL, { params: { id: id } })
@@ -306,19 +342,54 @@ export default {
     },
   },
   computed: {
-    sortListData() {
-      return this.listInspection.filter((row, index) => {
-        let start = (this.currentPagePa - 1) * this.pageSize;
-        let end = this.currentPagePa * this.pageSize;
-        if (index >= start && index < end) return true;
-      });
+    // sortListPa() {
+    //   return this.listInspection.filter((row, index) => {
+    //     let start = (this.currentPagePa - 1) * this.pageSize;
+    //     let end = this.currentPagePa * this.pageSize;
+    //     if (index >= start && index < end) return true;
+    //   });
+    // },
+    sortListPa() {
+      return [...this.listInspection]
+        .sort((a, b) => {
+          if (a[this.sortByPa] >= b[this.sortByPa]) {
+            return this.sortOrderPa;
+          }
+          return -this.sortOrderPa;
+        })
+        .filter((row) => {
+          if (this.keySearch != "") {
+            if (this.keySearch.includes("%"))
+              return row.state_ok == this.keySearch.replace("%", "");
+            return row.id.includes(this.keySearch);
+          }
+          return true;
+        })
+        .filter((row, index) => {
+          let start = (this.currentPagePa - 1) * this.pageSize;
+          let end = this.currentPagePa * this.pageSize;
+
+          if (index >= start && index < end) return true;
+        });
     },
-    sortListAllDetails() {
-      return this.listAllDetails.filter((row, index) => {
-        let start = (this.currentPageCh - 1) * this.pageSize;
-        let end = this.currentPageCh * this.pageSize;
-        if (index >= start && index < end) return true;
-      });
+    sortListCh() {
+      return [...this.listAllDetails]
+        .sort((a, b) => {
+          if (a[this.sortByCh] >= b[this.sortByCh]) {
+            return this.sortOrderCh;
+          }
+          return -this.sortOrderCh;
+        })
+        .filter((row, index) => {
+          let start = (this.currentPageCh - 1) * this.pageSize;
+          let end = this.currentPageCh * this.pageSize;
+          if (index >= start && index < end) return true;
+        });
+    },
+  },
+  watch: {
+    keySearch() {
+      this.sortListPa;
     },
   },
 };
