@@ -1,0 +1,18 @@
+# version: '3.8'
+# services:
+#   frontend:
+#       container_name: frontend-vuejs
+#       build:
+#         context: ./
+#         dockerfile: back-end/Dockerfile
+#       command: yarn serve --reload
+#       ports:
+#         - "8080:8080"
+#   backend:
+#     container_name: backend-python
+#     build:
+#        context: ./
+#        dockerfile: front-end/Dockerfile
+#     command: uvicorn app.index:app --host 0.0.0.0
+#     ports:
+#       - "8000:8000"
