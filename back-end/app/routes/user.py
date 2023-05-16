@@ -47,7 +47,7 @@ async def find_all_users():
 
 
 # RETRIEVE ACCOUNT BY ID
-@app_router.get("/user/{id}", dependencies=[Depends(JWTBearer())])
+@app_router.get("/user/{id}", dependencies=[Depends(JWTBearerAdmin())])
 async def find_user_by_id(id: str):
     result = userEntity(db.find_one({"_id": ObjectId(id)}))
     return {"status": "success", "data": result}
@@ -187,3 +187,66 @@ async def user_login(user: User):
     else:
         raise HTTPException(
             status_code=404, detail="Account's been deleted")
+
+
+@app_router.get("/new-clients", dependencies=[Depends(JWTBearerAdmin())])
+async def new_clients():
+    newClientsThisQuarter = 0
+    ClientsLastQuarter = 0
+    pc = 0
+    quarterNow = int(datetime.now().month) // 4 + 1
+    allUsers = usersEntity(db.find())
+
+    for u in allUsers:
+        quaterU = int(u["created_at"].month) // 4 + 1
+        if quaterU == quarterNow:
+            newClientsThisQuarter += 1
+        elif quarterU == quarterNow - 1:
+            ClientsLastQuarter += 1
+
+    if ClientsLastQuarter == 0:
+        pc = -1
+    else:
+        total = False
+        pc = round(
+            100 * (newClientsThisQuarter - ClientsLastQuarter) /
+            ClientsLastQuarter, 2
+        )
+
+    return {
+        "newClients": (format(newClientsThisQuarter, ",d")),
+        "percent": pc,
+    }
+    
+
+@app_router.get("/today-users", dependencies=[Depends(JWTBearerAdmin())])
+async def today_users():
+    allUsers = usersEntity(db.find())
+    countUserToday = 0
+    countUserThisOneLastWeek = 0
+    pc = 0
+    total = True
+    for us in allUsers:
+        arrAccessed = us["accessed_at"]
+        for a in arrAccessed:
+            if a.date() == date.today():
+                countUserToday += 1
+            elif abs(date.today() - a.date()).days == 7:
+                countUserThisOneLastWeek += 1
+    if countUserThisOneLastWeek == 0:
+        pc = round((100 * (countUserToday / len(allUsers))), 2)
+    else:
+        total = False
+        pc = round(
+            100
+            * (countUserToday - countUserThisOneLastWeek)
+            / countUserThisOneLastWeek,
+            2,
+        )
+    return {
+        "todayUsers": (format(countUserToday, ",d")),
+        "percent": pc,
+        "total": total,
+    }
+
+

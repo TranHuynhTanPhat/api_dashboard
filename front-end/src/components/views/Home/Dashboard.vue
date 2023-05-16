@@ -2,7 +2,7 @@
   <div>
     <Navbar />
     <div class="dashboard-contain-top">
-      <div class="contain-top-child">
+      <div class="contain-top-child" v-if="this.role==0">
         <div class="contain-top-child-left">
           <p class="title">today's users</p>
           <p class="main">{{ this.today_user.count }}</p>
@@ -15,7 +15,7 @@
             <p class="desc-content">compared with total</p>
           </div>
         </div>
-        <div class="contain-top-child-right" style="background-color: #DE3163">
+        <div class="contain-top-child-right" style="background-color: #de3163">
           <font-awesome-icon
             icon="fa-solid fa-users"
             size="2xl"
@@ -23,7 +23,7 @@
           />
         </div>
       </div>
-      <div class="contain-top-child">
+      <div class="contain-top-child" v-if="this.role0==0">
         <div class="contain-top-child-left">
           <p class="title">new client</p>
           <p class="main">{{ this.new_clients.newClients }}</p>
@@ -134,6 +134,7 @@ export default {
         time: null,
         total: 0,
       },
+      role: localStorage.getItem("role"),
     };
   },
   mounted() {
@@ -141,7 +142,6 @@ export default {
       localStorage.getItem("id") == null ||
       localStorage.getItem("access_token") == null
     ) {
-
       this.$router.push({ name: "Signin" });
     }
   },
@@ -155,34 +155,36 @@ export default {
 
     this.total_check_time.today = new Date().toLocaleString();
 
-    await axios
-      .get(TODAY_USERS,{
+    if (localStorage.getItem("role") == 0) {
+      await axios
+        .get(TODAY_USERS, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('access_token')}`
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            this.today_user.count = res.data.todayUsers;
+            this.today_user.percent = res.data.percent;
+            this.today_user.total = res.data.total;
           }
         })
-      .then((res) => {
-        if (res.status == 200) {
-          this.today_user.count = res.data.todayUsers;
-          this.today_user.percent = res.data.percent;
-          this.today_user.total = res.data.total;
-        }
-      })
-      .catch((ex) => {
-        console.log(ex);
-      });
+        .catch((ex) => {
+          console.log(ex);
+        });
 
-    await axios
-      .get(NEW_CLIENTS)
-      .then((res) => {
-        if (res.status == 200) {
-          this.new_clients.newClients = res.data.newClients;
-          this.new_clients.percent = res.data.percent;
-        }
-      })
-      .catch((ex) => {
-        console.log(ex);
-      });
+      await axios
+        .get(NEW_CLIENTS)
+        .then((res) => {
+          if (res.status == 200) {
+            this.new_clients.newClients = res.data.newClients;
+            this.new_clients.percent = res.data.percent;
+          }
+        })
+        .catch((ex) => {
+          console.log(ex);
+        });
+    }
 
     await axios
       .get(STATE_OK)
