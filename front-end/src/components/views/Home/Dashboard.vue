@@ -23,7 +23,7 @@
           />
         </div>
       </div>
-      <div class="contain-top-child" v-if="this.role0==0">
+      <div class="contain-top-child" v-if="this.role==0">
         <div class="contain-top-child-left">
           <p class="title">new client</p>
           <p class="main">{{ this.new_clients.newClients }}</p>

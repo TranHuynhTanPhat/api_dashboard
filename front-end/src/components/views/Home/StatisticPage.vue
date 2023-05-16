@@ -2,6 +2,10 @@
   <div>
     <Navbar />
     <div class="statistic-main">
+      <div class="top_statistic">
+        <p class="h1">HO statistic</p>
+        <HOStatistic />
+      </div>
       <div class="statistic-main-top">
         <div class="statistic-main-top-left">
           <div
@@ -103,7 +107,14 @@
           class="statistic-main-top-right"
           v-if="this.currentId != 'Undefined'"
         >
-          <DoughnutChart />
+
+        <div height="500" >
+            <PredictStatistic />
+          </div>
+          <div height="500dp" >
+            <DoughnutChart />
+          </div>
+          
         </div>
         <div class="statistic-main-top-rignt" v-else></div>
       </div>
@@ -208,13 +219,17 @@ import axios from "axios";
 import { GET_INSPECTION, GET_INSPECTION_DETAIL } from "@/axios";
 import Navbar from "../../AppNav.vue";
 import DoughnutChart from "./charts/DoughnutChart.vue";
-import { EXPORT_EXCEL_API } from "../../../axios";
+import HOStatistic from "./charts/HOStatistic.vue";
+import PredictStatistic from "./charts/PredictStatistic.vue";
+import { EXPORT_EXCEL_API, GET_HO_STATISTIC } from "../../../axios";
 
 export default {
   name: "StatisticPage",
   components: {
     Navbar,
     DoughnutChart,
+    HOStatistic,
+    PredictStatistic,
   },
   data() {
     return {
@@ -265,6 +280,13 @@ export default {
         this.listInspection = res.data.data;
       }
     });
+
+    await axios.get(GET_HO_STATISTIC).then((res) => {
+      if (res.status == 200) {
+        this.$store.dispatch("labels", res.data.label);
+        this.$store.dispatch("values", res.data.value);
+      }
+    });
   },
   methods: {
     nextPagePa() {
@@ -302,6 +324,8 @@ export default {
         .then((res) => {
           if (res.status == 200) {
             this.$store.dispatch("angleId", res.data.angle_id);
+            this.$store.dispatch("predicts", res.data.label);
+            this.$store.dispatch("predict_values", res.data.value);
             this.listAllDetails = res.data.all_details;
             this.currentId = id;
             this.fileNameID = id + ".xls";

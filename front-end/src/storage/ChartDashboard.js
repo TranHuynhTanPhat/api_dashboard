@@ -4,7 +4,9 @@ export default {
         count: [],
         stateOk: [],
         stateFail: [],
-        angleId: null
+        angleId: null,
+        predicts:[],
+        predict_values:[]
     },
     mutations: {
 
@@ -19,6 +21,12 @@ export default {
         },
         angleId: (state, data) => {
             state.angleId = data
+        },
+        predicts: (state, data) => {
+            state.predicts = data
+        },
+        predict_values: (state, data) => {
+            state.predict_values = data
         }
     },
     getters: {
@@ -33,6 +41,12 @@ export default {
         },
         getAngleId(state) {
             return state.angleId
+        },
+        getPredicts(state) {
+            return state.predicts
+        },
+        getPredict_values(state) {
+            return state.predict_values
         }
     },
     actions: {
@@ -47,6 +61,12 @@ export default {
         },
         angleId(context, data) {
             context.commit('angleId', data)
+        },
+        predicts(context, data) {
+            context.commit('predicts', data)
+        },
+        predict_values(context, data) {
+            context.commit('predict_values', data)
         }
     }
 }

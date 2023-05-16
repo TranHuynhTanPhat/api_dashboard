@@ -33,8 +33,6 @@ async def chart_data():
     return {"count": times, "stateOk": stateOk, "stateFail": stateFail}
 
 
-
-
 @app_router.get("/status-success", dependencies=[Depends(JWTBearer())])
 async def status_success():
     percent = round(100 * (sum(stateOk) / sum(times)), 2)
@@ -51,7 +49,7 @@ async def get_inspection():
     return {"data": inspection}
 
 
-@app_router.get("/get-inspection-detail", dependencies=[Depends(JWTBearer())])
+@app_router.get("/get-inspection-detail")
 async def get_inspection_detail(id: str):
     try:
         detail_predict = []
@@ -74,7 +72,25 @@ async def get_inspection_detail(id: str):
                     "predict_result": temp["predict_result"],
                 }
             )
-        return {"angle_id": angid, "all_details": detail_predict}
+
+        # get labels
+        labels = dict()
+        if data[id]:
+            for item in data[id]:
+                result = data[id][item]
+                for i in result["predict_result"]:
+                    if i in labels:
+                        labels[i] += 1
+                    else:
+                        labels[i] = 1
+        else:
+            raise HTTPException(status_code=404, detail="Id invalid")
+
+        labels_key = sorted(labels)
+        result = []
+        for i in range(len(labels_key)):
+            result.append(labels[labels_key[i]])
+        return {"angle_id": angid, "all_details": detail_predict, "label": labels_key, "value": result}
     except:
         raise HTTPException(status_code=500)
 
@@ -130,7 +146,7 @@ async def download_api_data():
 
 
 @app_router.get("/id_statistic", dependencies=[Depends(JWTBearer())])
-async def id_statis():
+async def id_statistic():
 
     # get labels
     labels = dict()
@@ -139,27 +155,12 @@ async def id_statis():
             labels[i[0:3]] += 1
         else:
             labels[i[0:3]] = 1
+    value = []
+    label = sorted(labels)
+    for i in range(len(label)):
+        value.append(labels[label[i]])
+    return {"label": label, "value": value}
 
-    return {"data": labels}
 
-
-@app_router.get("/predict_result_statistic", dependencies=[Depends(JWTBearer())])
-async def predict_result_statistic(id):
-
-    # get labels
-    labels = dict()
-    if data[id]:
-        for item in data[id]:
-            result = data[id][item]
-            for i in result["predict_result"]:
-                if i in labels:
-                    labels[i] += 1
-                else:
-                    labels[i] = 1
-    else:
-        raise HTTPException(status_code=404, detail="Id invalid")
-    labels_key = sorted(labels)
-    result=dict()
-    for i in range(len(labels_key)):
-        result[labels_key[i]]=labels[labels_key[i]]
-    return {"data": result}
+# @app_router.get("/predict_result_statistic", dependencies=[Depends(JWTBearer())])
+# async def predict_result_statistic(id):
