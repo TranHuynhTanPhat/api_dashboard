@@ -3,6 +3,7 @@ services:
   app:
     container_name: frontend-vuejs
     build: .
+    command: yarn serve --reload
     restart: always
     volumes:
       - .:/app
