@@ -43,7 +43,7 @@ uvicorn app.index:app --reload
 
 ### If URL of Server is different from http://127.0.0.1:8000
 
-### Change it from FrontEnd
+### Change it at FrontEnd/axios.js
 
 ## Docker
 
