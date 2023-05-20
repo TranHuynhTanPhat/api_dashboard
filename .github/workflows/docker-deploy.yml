@@ -49,11 +49,10 @@ jobs:
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
-          host: ec2-18-232-174-179.compute-1.amazonaws.com
+          host: ec2-54-198-43-143.compute-1.amazonaws.com
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker stop $(docker ps -a -q)
-            docker system prune -a
+            docker-compose down
             docker-compose pull
             docker-compose up -d
