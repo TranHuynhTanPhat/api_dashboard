@@ -46,8 +46,13 @@ jobs:
       - name: Push Frontend Docker Image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend-image:v1
 
-      - name: Deploy Docker Compose
-        run: |
-          ssh ubuntu@ec2-3-84-251-193.compute-1.amazonaws.com "cd /API_DASHBOARD && \
-            docker-compose pull && \
-            docker-compose up -d"
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ec2-3-84-251-193.compute-1.amazonaws.com
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker-compose down
+            docker-compose pull
+            docker-compose up -d
