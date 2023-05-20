@@ -53,6 +53,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            docker system prune -a
             docker-compose down
             docker-compose pull
             docker-compose up 
