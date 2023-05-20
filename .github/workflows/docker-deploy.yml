@@ -56,4 +56,4 @@ jobs:
             docker stop $(docker ps -a -q)
             docker system prune -a
             docker-compose pull
-            docker-compose up 
+            docker-compose up -d
