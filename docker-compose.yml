@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  frontend:
+    container_name: frontend-vuejs
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+    volumes:
+      - ./front-end:/app
+      - /app/node_modules  
+    ports:
+      - 8080:8080
+    depends_on:
+      - backend
+
+  backend:
+    container_name: backend-python
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile
+    volumes:
+      - ./back-end:/app
+    ports:
+      - 8000:8000
+    depends_on:
+      - database
+
+  database:
+    image: mongo
+    ports:
+      - 27017:27017
+    
