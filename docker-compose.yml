@@ -23,11 +23,4 @@ services:
       - ./back-end:/app
     ports:
       - 8000:8000
-    depends_on:
-      - database
 
-  database:
-    image: mongo
-    ports:
-      - 27017:27017
-    
