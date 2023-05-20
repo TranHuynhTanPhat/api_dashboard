@@ -42,6 +42,6 @@ jobs:
 
       - name: Deploy Docker Compose
         run: |
-          ssh user@your-server-address "cd /API_DASHBOARD && \
+          ssh ubuntu@ec2-3-84-251-193.compute-1.amazonaws.com "cd /API_DASHBOARD && \
             docker-compose pull && \
             docker-compose up -d"

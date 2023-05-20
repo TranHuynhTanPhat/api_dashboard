@@ -18,9 +18,9 @@ FROM node:14 as build-stage
 
 # Sao chép mã nguồn frontend vào thư mục làm việc
 WORKDIR /app
-COPY frontend/package*.json ./
+COPY package*.json ./
 RUN npm install
-COPY frontend .
+COPY . .
 RUN npm run build
 
 # Hình ảnh cuối cùng sử dụng Nginx để phục vụ frontend
