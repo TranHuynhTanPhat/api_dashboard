@@ -41,10 +41,10 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Push Backend Docker Image
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/backend-image
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/backend-image:v1
 
       - name: Push Frontend Docker Image
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend-image
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/frontend-image:v1
 
       - name: Deploy Docker Compose
         run: |
