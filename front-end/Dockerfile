@@ -34,16 +34,12 @@ COPY . .
 RUN npm run build
 
 # Hình ảnh cuối cùng với Nginx để phục vụ ứng dụng
-FROM nginx:stable-alpine as production-stage
+FROM nginx as production-stage
 
-# Sao chép tệp cấu hình Nginx
-COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
+RUN mkdir /app
 
 # Sao chép tệp được xây dựng từ frontend vào thư mục của Nginx
-COPY --from=build-stage /app/dist /usr/share/nginx/html
+COPY --from=build-stage /app/dist /app
 
-# Mở cổng 80 để phục vụ ứng dụng
-EXPOSE 80
-
-# Chạy Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Sao chép tệp cấu hình Nginx
+COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
