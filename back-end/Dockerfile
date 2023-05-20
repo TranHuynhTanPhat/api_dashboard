@@ -17,13 +17,13 @@ FROM python:3.9
 WORKDIR /app
 
 # Sao chép các tệp yêu cầu vào thư mục làm việc
-COPY backend/requirements.txt /app/requirements.txt
+COPY requirements.txt ./
 
 # Cài đặt các gói phụ thuộc cho backend
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Sao chép mã nguồn backend vào thư mục làm việc
-COPY backend /app
+COPY . .
 
 # Chạy lệnh để khởi chạy backend
 CMD ["uvicorn", "app.index:app", "--host", "0.0.0.0", "--port", "8000"]
