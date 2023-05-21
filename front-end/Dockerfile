@@ -43,3 +43,9 @@ COPY --from=build-stage /app/dist /app
 
 # Sao chép tệp cấu hình Nginx
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
+
+# Mở cổng 80 để phục vụ ứng dụng
+EXPOSE 80
+
+# Chạy Nginx
+CMD ["nginx", "-g", "daemon off;"]
