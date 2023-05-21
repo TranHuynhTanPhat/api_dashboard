@@ -14,9 +14,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: update ubuntu
-        run: sudo apt-get update && apt-get install -y curl
-
       # - name: Set up Python 3.x
       #   uses: actions/setup-python@v2
       #   with:
