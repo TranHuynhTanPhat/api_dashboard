@@ -27,14 +27,20 @@ services:
 # version: '3.8'
 
 # services:
-#   backend:
-#     image: tranhuynhtanphat/backend-image:v1
-#     ports:
-#       - 8000:8000
-#     restart: always
-
 #   frontend:
 #     image: tranhuynhtanphat/frontend-image:v1
+#     container_name: frontend-vuejs
 #     ports:
 #       - 80:80
-#     restart: always
+#     restart: unless-stopped
+#     depends_on:
+#       - backend
+
+#   backend:
+#     image: tranhuynhtanphat/backend-image:v1
+#     container_name: backend-python
+#     ports:
+#       - 8000:8000
+#     restart: unless-stopped
+
+  
