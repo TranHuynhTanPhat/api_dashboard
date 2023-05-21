@@ -53,5 +53,5 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker-compose down
-            docker-compose up -d
+            docker-compose -f /path/to/docker-compose.yml down
+            docker-compose -f /path/to/docker-compose.yml up -d
