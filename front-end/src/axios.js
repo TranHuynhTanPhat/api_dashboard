@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://ec2-54-173-239-142.compute-1.amazonaws.com:8000/'
+axios.defaults.baseURL = 'http://ec2-18-234-78-87.compute-1.amazonaws.com:8000/'
 axios.defaults.headers.common = { 'Authorization': `Bearer ${localStorage.getItem("access_token")}` }
 
 
